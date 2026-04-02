@@ -2,6 +2,8 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { MapPin, ArrowLeft, Sparkles, Clock, DollarSign, Calendar, Star, Info } from "lucide-react";
 import WaitTimesPanel from "@/components/WaitTimesPanel";
+import WeatherPanel from "@/components/WeatherPanel";
+import ParkHoursPanel from "@/components/ParkHoursPanel";
 
 const RESORTS: Record<string, {
   name: string;
@@ -557,8 +559,14 @@ export default async function ResortPage({ params }: { params: Promise<{ id: str
             </section>
           </div>
 
-          {/* Right: Live wait times + Hotels + Best Times */}
+          {/* Right: Live data sidebar */}
           <div className="space-y-6">
+
+            {/* Weather */}
+            <WeatherPanel resortId={id} />
+
+            {/* Park Hours & LL */}
+            {/* Rendered client-side via WaitTimesPanel which now includes shows tab */}
 
             {/* Live Wait Times */}
             <WaitTimesPanel resortId={id} />

@@ -56,26 +56,42 @@ function PlanPageContent() {
     setLoading(true);
 
     try {
-      const response = await fetch("https://api.anthropic.com/v1/messages", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          model: "claude-sonnet-4-20250514",
-          max_tokens: 1000,
-          system: `You are ParkPlan.ai — a friendly, expert AI theme park trip planner. You specialize in Disney resorts (Walt Disney World, Disneyland, Disneyland Paris, Tokyo Disney Resort, Hong Kong Disneyland, Shanghai Disney Resort) and Universal Orlando Resort.
+      // Fetch live park context (wait times + weather) to inject into AI
+      let liveContext = "";
+      try {
+        const ctxRes = await fetch(`/api/context?resort=${resortId || "wdw"}`);
+        if (ctxRes.ok) {
+          const ctxData = await ctxRes.json();
+          liveContext = ctxData.contextText || "";
+        }
+      } catch { /* live context optional */ }
+
+      const systemPrompt = `You are ParkPlan.ai — a friendly, expert AI theme park trip planner. You specialize in Disney resorts (Walt Disney World, Disneyland, Disneyland Paris, Tokyo Disney Resort, Hong Kong Disneyland, Shanghai Disney Resort) and Universal Orlando Resort.
 
 You help families and theme park enthusiasts plan incredible park days. You provide:
-- Optimized itineraries based on crowd patterns and ride locations
+- Optimized itineraries based on real current wait times and crowd patterns
 - Budget breakdowns (tickets, food, hotels, extras)
 - Hotel recommendations (on-site vs. off-site with pros/cons)
-- Lightning Lane / Genie+ strategy advice
+- Lightning Lane / Genie+ strategy advice using today's actual pricing
 - Crowd level predictions and best visiting times
 - Dining reservation tips and must-eat food recommendations
 - Insider tips and hidden gems
 
 ${resortId ? `The user is planning a trip to ${RESORT_NAMES[resortId] || resortId}.` : ""}
 
-Be warm, enthusiastic, and expert. Use emojis sparingly but effectively. Format responses with clear sections using **bold** for headers. Keep responses actionable and specific. You are NOT affiliated with Disney or Universal — you're an independent AI planning tool.`,
+${liveContext ? `${liveContext}
+
+When answering, incorporate this live data naturally. Mention specific current wait times, today's weather, and walk-ons when relevant. If rain is forecasted, factor that into your recommendations.` : ""}
+
+Be warm, enthusiastic, and expert. Use emojis sparingly but effectively. Format responses with clear sections using **bold** for headers. Keep responses actionable and specific. You are NOT affiliated with Disney or Universal — you're an independent AI planning tool.`;
+
+      const response = await fetch("https://api.anthropic.com/v1/messages", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          model: "claude-sonnet-4-20250514",
+          max_tokens: 1000,
+          system: systemPrompt,
           messages: newMessages.map((m) => ({ role: m.role, content: m.content })),
         }),
       });
