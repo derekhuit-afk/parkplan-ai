@@ -393,26 +393,48 @@ function PlanContent() {
       {messages.length <= 1 && tripMode !== "future" && <div className="flex-1" />}
 
       {/* ── Input Bar ─────────────────────── */}
-      <div className="flex-shrink-0 px-4 pb-5 pt-3 border-t" style={{ borderColor: "rgba(255,215,0,0.1)" }}
+      <div className="flex-shrink-0 px-4 pb-6 pt-3 border-t" style={{ borderColor: "rgba(255,215,0,0.12)" }}
         onClick={() => setShowTrips(false)}>
         <div className="max-w-2xl mx-auto">
-          <div className="flex items-end gap-3 rounded-2xl px-4 py-3"
-            style={{ background: "rgba(18,41,110,0.6)", border: "1px solid rgba(255,215,0,0.15)" }}>
+
+          {/* Input row */}
+          <div className="flex items-end gap-3 rounded-2xl px-4 py-3.5"
+            style={{ background: "rgba(18,41,110,0.65)", border: "1.5px solid rgba(255,215,0,0.2)" }}>
             <textarea ref={textareaRef} value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(); } }}
               placeholder="Ask anything about your trip…"
               rows={1}
-              className="flex-1 bg-transparent border-none outline-none text-sm resize-none leading-relaxed"
-              style={{ color: "#FFF8E7", fontFamily: "var(--font-nunito)", maxHeight: "100px" }}
-              onInput={(e) => { const el = e.currentTarget; el.style.height = "auto"; el.style.height = Math.min(el.scrollHeight, 100) + "px"; }} />
+              className="flex-1 bg-transparent border-none outline-none resize-none leading-relaxed"
+              style={{ color: "#FFFFFF", fontFamily: "var(--font-nunito)", fontSize: "1rem", maxHeight: "120px", paddingTop: "2px" }}
+              onInput={(e) => { const el = e.currentTarget; el.style.height = "auto"; el.style.height = Math.min(el.scrollHeight, 120) + "px"; }} />
+
+            {/* LARGE send button */}
             <button onClick={() => send()} disabled={loading || !input.trim()}
-              className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 transition-all disabled:opacity-30"
-              style={{ background: loading || !input.trim() ? "rgba(18,41,110,0.8)" : "linear-gradient(135deg, #FFD700, #FFA500)" }}>
-              <Send size={16} style={{ color: loading || !input.trim() ? "rgba(220,235,255,0.55)" : "#00194B" }} />
+              className="flex items-center justify-center flex-shrink-0 transition-all disabled:opacity-35 active:scale-95"
+              style={{
+                width: "52px",
+                height: "52px",
+                borderRadius: "14px",
+                background: loading || !input.trim()
+                  ? "rgba(255,255,255,0.07)"
+                  : "linear-gradient(145deg, #FFD700, #FFA500)",
+                border: loading || !input.trim()
+                  ? "1px solid rgba(255,255,255,0.1)"
+                  : "none",
+                boxShadow: loading || !input.trim()
+                  ? "none"
+                  : "0 4px 20px rgba(255,215,0,0.4)",
+              }}>
+              {loading
+                ? <div className="w-5 h-5 rounded-full border-2 border-t-transparent animate-spin"
+                    style={{ borderColor: "rgba(220,235,255,0.4)", borderTopColor: "transparent" }} />
+                : <Send size={22} style={{ color: !input.trim() ? "rgba(220,235,255,0.35)" : "#00194B" }} />
+              }
             </button>
           </div>
-          <p className="text-[10px] text-center mt-2 font-body" style={{ color: "rgba(220,235,255,0.45)", fontFamily: "var(--font-nunito)" }}>
+
+          <p className="text-center mt-2.5" style={{ fontFamily: "var(--font-nunito)", fontSize: "0.65rem", color: "rgba(220,235,255,0.35)" }}>
             Live park data · Free forever · Not affiliated with Disney or Universal
           </p>
         </div>
