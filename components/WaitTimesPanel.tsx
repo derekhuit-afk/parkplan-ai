@@ -71,12 +71,12 @@ export default function WaitTimesPanel({ resortId }: { resortId: string }) {
   const hasShows = (park?.shows?.length ?? 0) > 0;
 
   return (
-    <div className="rounded-2xl border overflow-hidden" style={{ background: "rgba(13,27,42,0.8)", borderColor: "rgba(78,205,196,0.2)" }}>
+    <div className="rounded-2xl border overflow-hidden" style={{ background: "rgba(13,27,42,0.8)", borderColor: "rgba(255,215,0,0.2)" }}>
       {/* Header */}
-      <div className="flex items-center justify-between px-4 py-3 border-b" style={{ borderColor: "rgba(78,205,196,0.12)", background: "rgba(78,205,196,0.05)" }}>
+      <div className="flex items-center justify-between px-4 py-3 border-b" style={{ borderColor: "rgba(255,215,0,0.1)", background: "rgba(255,215,0,0.04)" }}>
         <div className="flex items-center gap-2">
           <div className="w-6 h-6 rounded-lg flex items-center justify-center" style={{ background: "rgba(78,205,196,0.15)" }}>
-            <Clock size={13} style={{ color: "#4ECDC4" }} />
+            <Clock size={13} style={{ color: "#FFD700" }} />
           </div>
           <span className="font-body font-600 text-sm text-park-cream">Live Wait Times</span>
           {!loading && !error && (
@@ -100,7 +100,7 @@ export default function WaitTimesPanel({ resortId }: { resortId: string }) {
               onClick={() => { setActivePark(i); setTab("top"); }}
               className="flex-shrink-0 px-3 py-1.5 rounded-lg text-[11px] font-body font-500 transition-all"
               style={activePark === i
-                ? { background: "rgba(78,205,196,0.15)", color: "#4ECDC4", border: "1px solid rgba(78,205,196,0.3)" }
+                ? { background: "rgba(78,205,196,0.15)", color: "#FFD700", border: "1px solid rgba(78,205,196,0.3)" }
                 : { color: "#B8C9D9", border: "1px solid transparent" }}
             >
               {p.parkName.replace(/Disney('s)?|Universal('s)?|Walt /gi, "").trim()}
@@ -128,7 +128,7 @@ export default function WaitTimesPanel({ resortId }: { resortId: string }) {
             {/* Stats row */}
             <div className="grid grid-cols-3 gap-2 mb-4">
               {[
-                { label: "Open Rides", value: `${park.openAttractions}/${park.totalAttractions}`, color: "#4ECDC4" },
+                { label: "Open Rides", value: `${park.openAttractions}/${park.totalAttractions}`, color: "#FFD700" },
                 { label: "Avg Wait", value: `${park.avgWait}m`, color: "#F5C842" },
                 { label: "Walk-ons", value: String(park.walkOns.length), color: "#7ED321" },
               ].map(({ label, value, color }) => (

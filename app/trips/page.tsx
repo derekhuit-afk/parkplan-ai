@@ -47,10 +47,10 @@ export default function TripsPage() {
   );
 
   return (
-    <main className="min-h-screen" style={{ background: "#0D1B2A" }}>
+    <main className="min-h-screen" style={{ background: "#00194B" }}>
       {/* Header */}
       <header className="border-b px-4 sm:px-6 py-4 sticky top-0 z-10"
-        style={{ borderColor: "rgba(245,200,66,0.12)", background: "rgba(13,27,42,0.97)", backdropFilter: "blur(16px)" }}>
+        style={{ borderColor: "rgba(255,215,0,0.12)", background: "rgba(0,25,75,0.97)", backdropFilter: "blur(16px)" }}>
         <div className="max-w-4xl mx-auto flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2 group">
             <ArrowLeft size={16} className="text-park-mist group-hover:text-park-gold transition-colors" />
@@ -63,7 +63,7 @@ export default function TripsPage() {
           </Link>
           <Link href="/plan"
             className="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-body font-600 text-park-night"
-            style={{ background: "linear-gradient(135deg, #F5C842, #E8A020)" }}>
+            style={{ background: "linear-gradient(135deg, #FFD700, #FFA500)" }}>
             + New Plan
           </Link>
         </div>
@@ -87,7 +87,7 @@ export default function TripsPage() {
         {trips.length > 0 && (
           <div className="flex gap-3 mb-6">
             <div className="flex-1 flex items-center gap-2 px-3 py-2.5 rounded-xl border"
-              style={{ background: "rgba(26,46,69,0.5)", borderColor: "rgba(255,255,255,0.1)" }}>
+              style={{ background: "rgba(10,31,92,0.5)", borderColor: "rgba(255,255,255,0.1)" }}>
               <Search size={14} className="text-park-mist flex-shrink-0" />
               <input
                 value={search}
@@ -127,7 +127,7 @@ export default function TripsPage() {
             </p>
             <Link href="/plan"
               className="inline-flex items-center gap-2 px-8 py-3 rounded-full text-sm font-body font-700 text-park-night"
-              style={{ background: "linear-gradient(135deg, #F5C842, #E8A020)" }}>
+              style={{ background: "linear-gradient(135deg, #FFD700, #FFA500)" }}>
               Start Planning
             </Link>
           </div>
@@ -204,7 +204,7 @@ export default function TripsPage() {
                       <ShareButton tripId={trip.id} />
                       <Link href={`/plan?resort=${trip.resortId}&load=${trip.id}`}
                         className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-body font-600 transition-all"
-                        style={{ background: "rgba(245,200,66,0.12)", color: "#F5C842", border: "1px solid rgba(245,200,66,0.25)" }}>
+                        style={{ background: "rgba(255,215,0,0.12)", color: "#FFD700", border: "1px solid rgba(245,200,66,0.25)" }}>
                         <ExternalLink size={11} />Open
                       </Link>
                     </div>

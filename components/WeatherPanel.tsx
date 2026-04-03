@@ -57,9 +57,9 @@ export default function WeatherPanel({ resortId }: { resortId: string }) {
   const rainAlert = (today?.rainChance ?? 0) >= 40;
 
   return (
-    <div className="rounded-2xl border overflow-hidden" style={{ background: "rgba(13,27,42,0.8)", borderColor: "rgba(245,200,66,0.15)" }}>
+    <div className="rounded-2xl border overflow-hidden" style={{ background: "rgba(13,27,42,0.8)", borderColor: "rgba(255,215,0,0.2)" }}>
       {/* Header */}
-      <div className="flex items-center gap-2 px-4 py-3 border-b" style={{ borderColor: "rgba(245,200,66,0.1)", background: "rgba(245,200,66,0.05)" }}>
+      <div className="flex items-center gap-2 px-4 py-3 border-b" style={{ borderColor: "rgba(255,215,0,0.1)", background: "rgba(255,215,0,0.05)" }}>
         <Cloud size={13} style={{ color: "#F5C842" }} />
         <span className="font-body font-600 text-sm text-park-cream">Park Weather</span>
       </div>
@@ -82,7 +82,7 @@ export default function WeatherPanel({ resortId }: { resortId: string }) {
               {current.windMph} mph wind
             </div>
             <div className="flex items-center justify-end gap-1.5 text-xs text-park-mist font-body">
-              <Thermometer size={11} className="text-park-gold" />
+              <Thermometer size={11} style={{ color: "#FFD700" }} />
               {today?.highF}° / {today?.lowF}° today
             </div>
           </div>

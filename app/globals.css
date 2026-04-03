@@ -1,86 +1,174 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800;900&family=Nunito:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Dancing+Script:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --font-playfair: 'Playfair Display', Georgia, serif;
-  --font-dm-sans: 'DM Sans', system-ui, sans-serif;
+  --font-cinzel:  'Cinzel', Georgia, serif;
+  --font-nunito:  'Nunito', system-ui, sans-serif;
+  --font-dancing: 'Dancing Script', cursive;
+
+  /* Disney color tokens */
+  --disney-night:   #00194B;
+  --disney-deep:    #0A1F5C;
+  --disney-violet:  #3D1A78;
+  --disney-gold:    #FFD700;
+  --disney-amber:   #FFA500;
+  --disney-cream:   #FFF8E7;
+  --disney-mist:    #C8D8F0;
 }
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-html {
-  scroll-behavior: smooth;
-}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
 
 body {
-  background-color: #0D1B2A;
-  color: #FFF8E7;
-  font-family: var(--font-dm-sans);
+  background: var(--disney-night);
+  background-image:
+    radial-gradient(ellipse 100% 60% at 50% 100%, rgba(61,26,120,0.5) 0%, transparent 70%),
+    radial-gradient(ellipse 60% 40% at 80% 20%,  rgba(18,41,110,0.4) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 30% at 20% 30%,  rgba(61,26,120,0.2) 0%, transparent 50%);
+  color: var(--disney-cream);
+  font-family: var(--font-nunito);
   overflow-x: hidden;
 }
 
-/* Scrollbar */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: #0D1B2A; }
-::-webkit-scrollbar-thumb { background: #1E3A5F; border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: #F5C842; }
+/* Custom scrollbar — golden */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: #00194B; }
+::-webkit-scrollbar-thumb { background: rgba(255,215,0,0.3); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,215,0,0.6); }
 
-/* Gold shimmer text */
+/* ─── Gold shimmer text ────────────────────── */
 .text-shimmer {
-  background: linear-gradient(90deg, #F5C842 0%, #FFF8E7 40%, #E8A020 60%, #F5C842 100%);
+  background: linear-gradient(90deg, #C8860A 0%, #FFD700 25%, #FFFDE0 50%, #FFD700 75%, #C8860A 100%);
   background-size: 200% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  animation: shimmer 3s linear infinite;
+  animation: shimmer 3.5s linear infinite;
 }
 
-/* Star field */
-.stars {
+/* ─── Magical text (script style) ─────────── */
+.text-magic {
+  font-family: var(--font-dancing);
+  background: linear-gradient(135deg, #FFD700, #FFA500);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ─── Starfield background ──────────────────  */
+.starfield {
   position: absolute;
   inset: 0;
-  background-image:
-    radial-gradient(1px 1px at 10% 20%, rgba(255,248,231,0.6) 0%, transparent 100%),
-    radial-gradient(1px 1px at 30% 60%, rgba(255,248,231,0.4) 0%, transparent 100%),
-    radial-gradient(1.5px 1.5px at 55% 15%, rgba(245,200,66,0.5) 0%, transparent 100%),
-    radial-gradient(1px 1px at 70% 80%, rgba(255,248,231,0.5) 0%, transparent 100%),
-    radial-gradient(1px 1px at 85% 35%, rgba(255,248,231,0.4) 0%, transparent 100%),
-    radial-gradient(1px 1px at 20% 85%, rgba(245,200,66,0.3) 0%, transparent 100%),
-    radial-gradient(1.5px 1.5px at 45% 45%, rgba(255,248,231,0.3) 0%, transparent 100%),
-    radial-gradient(1px 1px at 90% 70%, rgba(245,200,66,0.4) 0%, transparent 100%),
-    radial-gradient(1px 1px at 60% 90%, rgba(255,248,231,0.3) 0%, transparent 100%),
-    radial-gradient(1px 1px at 15% 50%, rgba(255,248,231,0.5) 0%, transparent 100%);
+  overflow: hidden;
   pointer-events: none;
 }
+.star {
+  position: absolute;
+  border-radius: 50%;
+  background: white;
+  animation: twinkle var(--dur, 2s) ease-in-out var(--delay, 0s) infinite;
+}
 
-/* Noise overlay */
-.noise::before {
+/* ─── Disney card style ─────────────────────  */
+.disney-card {
+  background: linear-gradient(135deg,
+    rgba(18,41,110,0.7) 0%,
+    rgba(10,31,92,0.8) 50%,
+    rgba(61,26,120,0.3) 100%
+  );
+  border: 1px solid rgba(255,215,0,0.15);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 8px 40px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,215,0,0.1);
+  transition: all 0.3s ease;
+}
+.disney-card:hover {
+  border-color: rgba(255,215,0,0.35);
+  box-shadow: 0 12px 50px rgba(0,0,0,0.5), 0 0 30px rgba(255,215,0,0.1), inset 0 1px 0 rgba(255,215,0,0.2);
+  transform: translateY(-2px);
+}
+
+/* ─── Magic button ──────────────────────────  */
+.btn-magic {
+  background: linear-gradient(135deg, #FFD700 0%, #FFA500 50%, #C8860A 100%);
+  color: #00194B;
+  font-weight: 700;
+  border-radius: 9999px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+.btn-magic::before {
   content: '';
   position: absolute;
   inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  background: linear-gradient(135deg, rgba(255,255,255,0.3), transparent);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.btn-magic:hover::before { opacity: 1; }
+.btn-magic:hover { transform: scale(1.04); box-shadow: 0 0 30px rgba(255,215,0,0.5), 0 8px 24px rgba(0,0,0,0.3); }
+
+/* ─── Castle silhouette divider ─────────────  */
+.castle-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,215,0,0.4), rgba(255,215,0,0.6), rgba(255,215,0,0.4), transparent);
+  position: relative;
+}
+.castle-divider::after {
+  content: '✦';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  color: rgba(255,215,0,0.8);
+  font-size: 12px;
+  background: var(--disney-night);
+  padding: 0 8px;
+}
+
+/* ─── Sparkle dot ───────────────────────────  */
+.sparkle-dot {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #FFD700;
+  animation: sparkle var(--dur, 1.5s) ease-in-out var(--delay, 0s) infinite;
+}
+
+/* ─── Noise texture overlay ─────────────────  */
+.disney-noise::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
   pointer-events: none;
   z-index: 0;
 }
 
-.card-glow:hover {
-  box-shadow: 0 0 40px rgba(245, 200, 66, 0.12), 0 20px 40px rgba(0,0,0,0.4);
+/* ─── Fireworks burst ───────────────────────  */
+@keyframes burst-ring {
+  0%   { transform: scale(0); opacity: 1; }
+  100% { transform: scale(2.5); opacity: 0; }
+}
+.fireworks-ring {
+  animation: burst-ring 1.2s ease-out forwards;
 }
 
+/* ─── Utility delays ────────────────────────  */
 @layer utilities {
-  .animation-delay-100 { animation-delay: 100ms; }
-  .animation-delay-200 { animation-delay: 200ms; }
-  .animation-delay-300 { animation-delay: 300ms; }
-  .animation-delay-400 { animation-delay: 400ms; }
-  .animation-delay-500 { animation-delay: 500ms; }
-  .animation-delay-600 { animation-delay: 600ms; }
-  .animation-delay-700 { animation-delay: 700ms; }
-  .animation-delay-800 { animation-delay: 800ms; }
+  .animation-delay-100  { animation-delay: 100ms; }
+  .animation-delay-200  { animation-delay: 200ms; }
+  .animation-delay-300  { animation-delay: 300ms; }
+  .animation-delay-400  { animation-delay: 400ms; }
+  .animation-delay-500  { animation-delay: 500ms; }
+  .animation-delay-600  { animation-delay: 600ms; }
+  .animation-delay-700  { animation-delay: 700ms; }
+  .animation-delay-800  { animation-delay: 800ms; }
+  .animation-delay-1000 { animation-delay: 1000ms; }
+  .animation-delay-1200 { animation-delay: 1200ms; }
+  .animation-fill-both  { animation-fill-mode: both; }
 }

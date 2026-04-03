@@ -38,7 +38,7 @@ function SaveTripModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4" style={{ background: "rgba(0,0,0,0.7)", backdropFilter: "blur(8px)" }}>
-      <div className="w-full max-w-md rounded-2xl border p-6" style={{ background: "#0D1B2A", borderColor: "rgba(245,200,66,0.25)" }}>
+      <div className="w-full max-w-md rounded-2xl border p-6" style={{ background: "#0D1B2A", borderColor: "rgba(255,215,0,0.25)" }}>
         <h3 className="font-display font-700 text-lg text-park-cream mb-1">Save This Trip</h3>
         <p className="text-xs text-park-mist font-body mb-5">Saved locally on this device. No account needed.</p>
 
@@ -69,7 +69,7 @@ function SaveTripModal({
           <button
             onClick={() => onSave(title || `${resortName} Trip`, { travelDates: dates, groupSize: group, budget })}
             className="flex-1 py-2.5 rounded-xl text-sm font-body font-700 text-park-night"
-            style={{ background: "linear-gradient(135deg, #F5C842, #E8A020)" }}
+            style={{ background: "linear-gradient(135deg, #FFD700, #FFA500, #C8860A)" }}
           >
             Save Trip
           </button>
@@ -206,7 +206,7 @@ Be warm, enthusiastic, and specific. Use **bold** for section headers. Use emoji
     content.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>").replace(/\n/g, "<br/>");
 
   return (
-    <div className="flex flex-col h-screen" style={{ background: "#0D1B2A" }}>
+    <div className="flex flex-col h-screen" style={{ background: "#00194B" }}>
       {showSaveModal && (
         <SaveTripModal
           resortName={resortName !== "your park" ? resortName : "My"}
@@ -217,7 +217,7 @@ Be warm, enthusiastic, and specific. Use **bold** for section headers. Use emoji
 
       {/* Header */}
       <header className="flex items-center justify-between px-4 sm:px-6 py-3 border-b flex-shrink-0"
-        style={{ borderColor: "rgba(245,200,66,0.12)", background: "rgba(13,27,42,0.97)", backdropFilter: "blur(16px)" }}>
+        style={{ borderColor: "rgba(255,215,0,0.12)", background: "rgba(0,25,75,0.97)", backdropFilter: "blur(16px)" }}>
         <Link href="/" className="flex items-center gap-2 group">
           <ArrowLeft size={16} className="text-park-mist group-hover:text-park-gold transition-colors" />
           <div className="w-7 h-7 rounded-full bg-gold-gradient flex items-center justify-center">
@@ -233,7 +233,7 @@ Be warm, enthusiastic, and specific. Use **bold** for section headers. Use emoji
           <button
             onClick={() => setShowTripList(!showTripList)}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-body font-500 border transition-all"
-            style={{ borderColor: "rgba(245,200,66,0.2)", color: trips.length > 0 ? "#F5C842" : "#B8C9D9" }}
+            style={{ borderColor: "rgba(245,200,66,0.2)", color: trips.length > 0 ? "#FFD700" : "#B8C9D9" }}
           >
             <Bookmark size={12} />
             {trips.length > 0 ? `${trips.length} saved` : "My trips"}
@@ -279,7 +279,7 @@ Be warm, enthusiastic, and specific. Use **bold** for section headers. Use emoji
           {messages.length > 1 && !saved && (
             <button onClick={() => setShowSaveModal(true)}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-body font-600 transition-all"
-              style={{ background: "rgba(245,200,66,0.12)", color: "#F5C842", border: "1px solid rgba(245,200,66,0.25)" }}>
+              style={{ background: "rgba(255,215,0,0.12)", color: "#FFD700", border: "1px solid rgba(245,200,66,0.25)" }}>
               <Bookmark size={12} /> Save
             </button>
           )}
@@ -329,8 +329,8 @@ Be warm, enthusiastic, and specific. Use **bold** for section headers. Use emoji
               <div
                 className="max-w-[85%] sm:max-w-[78%] px-4 py-3 text-sm font-body leading-relaxed"
                 style={msg.role === "user"
-                  ? { background: "rgba(245,200,66,0.12)", border: "1px solid rgba(245,200,66,0.22)", borderRadius: "18px 18px 4px 18px", color: "#FFF8E7" }
-                  : { background: "rgba(30,58,95,0.5)", border: "1px solid rgba(30,58,95,0.8)", borderRadius: "18px 18px 18px 4px", color: "#B8C9D9" }}
+                  ? { background: "rgba(255,215,0,0.12)", border: "1px solid rgba(245,200,66,0.22)", borderRadius: "18px 18px 4px 18px", color: "#FFF8E7" }
+                  : { background: "rgba(18,41,110,0.5)", border: "1px solid rgba(30,58,95,0.8)", borderRadius: "18px 18px 18px 4px", color: "#B8C9D9" }}
                 dangerouslySetInnerHTML={{ __html: fmt(msg.content) }}
               />
             </div>
@@ -341,7 +341,7 @@ Be warm, enthusiastic, and specific. Use **bold** for section headers. Use emoji
                 <Sparkles size={12} className="text-park-night" />
               </div>
               <div className="px-4 py-3 rounded-2xl flex items-center gap-2"
-                style={{ background: "rgba(30,58,95,0.5)", border: "1px solid rgba(30,58,95,0.8)", borderRadius: "18px 18px 18px 4px" }}>
+                style={{ background: "rgba(18,41,110,0.5)", border: "1px solid rgba(30,58,95,0.8)", borderRadius: "18px 18px 18px 4px" }}>
                 {[0, 150, 300].map((d) => (
                   <div key={d} className="w-2 h-2 rounded-full bg-park-gold animate-bounce" style={{ animationDelay: `${d}ms` }} />
                 ))}
@@ -359,7 +359,7 @@ Be warm, enthusiastic, and specific. Use **bold** for section headers. Use emoji
             {QUICK_PROMPTS.map(({ icon: Icon, label, prompt }) => (
               <button key={label} onClick={() => sendMessage(prompt)}
                 className="flex items-center gap-2 px-3 py-2.5 rounded-xl text-xs font-body font-500 text-park-mist hover:text-park-gold border transition-all hover:border-park-gold/40 hover:bg-white/5 text-left"
-                style={{ borderColor: "rgba(30,58,95,0.8)" }}>
+                style={{ borderColor: "rgba(18,41,110,0.8)" }}>
                 <Icon size={13} className="text-park-gold flex-shrink-0" />
                 {label}
               </button>
@@ -373,7 +373,7 @@ Be warm, enthusiastic, and specific. Use **bold** for section headers. Use emoji
         onClick={() => setShowTripList(false)}>
         <div className="max-w-3xl mx-auto">
           <div className="flex items-end gap-3 rounded-2xl p-3 border"
-            style={{ background: "rgba(26,46,69,0.6)", borderColor: "rgba(245,200,66,0.15)", backdropFilter: "blur(8px)" }}>
+            style={{ background: "rgba(10,31,92,0.6)", borderColor: "rgba(255,215,0,0.1)", backdropFilter: "blur(8px)" }}>
             <textarea
               value={input}
               onChange={(e) => setInput(e.target.value)}
@@ -385,7 +385,7 @@ Be warm, enthusiastic, and specific. Use **bold** for section headers. Use emoji
             />
             <button onClick={() => sendMessage()} disabled={loading || !input.trim()}
               className="w-9 h-9 rounded-xl flex items-center justify-center transition-all flex-shrink-0 disabled:opacity-30"
-              style={{ background: loading || !input.trim() ? "rgba(30,58,95,0.8)" : "linear-gradient(135deg, #F5C842, #E8A020)" }}>
+              style={{ background: loading || !input.trim() ? "rgba(18,41,110,0.8)" : "linear-gradient(135deg, #FFD700, #FFA500, #C8860A)" }}>
               <Send size={15} className={loading || !input.trim() ? "text-park-mist" : "text-park-night"} />
             </button>
           </div>

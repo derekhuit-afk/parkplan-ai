@@ -36,7 +36,7 @@ interface WeatherData { current: { tempF: number; feelsLikeF: number; label: str
 function waitColor(w: number|null, open: boolean) {
   if (!open || w === null) return "#B8C9D9";
   if (w <= 15) return "#4ECDC4"; if (w <= 30) return "#7ED321";
-  if (w <= 50) return "#F5C842"; if (w <= 75) return "#F5A623";
+  if (w <= 50) return "#FFD700"; if (w <= 75) return "#F5A623";
   return "#FF6B6B";
 }
 
@@ -102,10 +102,10 @@ function DashboardContent() {
   const rainAlert = (today?.rainChance ?? 0) >= 40;
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: "#0D1B2A" }}>
+    <div className="min-h-screen flex flex-col" style={{ background: "#00194B" }}>
       {/* Header */}
       <header className="flex items-center justify-between px-4 py-3 border-b flex-shrink-0 sticky top-0 z-20"
-        style={{ borderColor: "rgba(245,200,66,0.12)", background: "rgba(13,27,42,0.97)", backdropFilter: "blur(16px)" }}>
+        style={{ borderColor: "rgba(255,215,0,0.1)", background: "rgba(0,25,75,0.97)", backdropFilter: "blur(16px)" }}>
         <Link href="/" className="flex items-center gap-2 group">
           <ArrowLeft size={15} className="text-park-mist group-hover:text-park-gold transition-colors" />
           <div className="w-6 h-6 rounded-full bg-gold-gradient flex items-center justify-center">
@@ -120,17 +120,17 @@ function DashboardContent() {
         <div className="relative">
           <button onClick={() => setShowResortPicker(!showResortPicker)}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-body font-600 border transition-all"
-            style={{ borderColor: "rgba(245,200,66,0.25)", color: "#F5C842", background: "rgba(245,200,66,0.08)" }}>
+            style={{ borderColor: "rgba(255,215,0,0.25)", color: "#FFD700", background: "rgba(245,200,66,0.08)" }}>
             {selectedResort.name.split(" ").slice(0,2).join(" ")}
             <ChevronDown size={10} className={`transition-transform ${showResortPicker ? "rotate-180" : ""}`} />
           </button>
           {showResortPicker && (
             <div className="absolute right-0 top-full mt-1.5 w-56 rounded-2xl border shadow-2xl z-30 overflow-hidden"
-              style={{ background: "#0D1B2A", borderColor: "rgba(245,200,66,0.2)" }}>
+              style={{ background: "#00194B", borderColor: "rgba(245,200,66,0.2)" }}>
               {RESORTS.map(r => (
                 <button key={r.id} onClick={() => { setSelectedResortId(r.id); setSelectedParkIdx(0); setShowResortPicker(false); }}
                   className="w-full text-left px-4 py-2.5 text-xs font-body transition-colors hover:bg-white/5 border-b"
-                  style={{ color: r.id === selectedResortId ? "#F5C842" : "#B8C9D9", borderColor: "rgba(255,255,255,0.04)" }}>
+                  style={{ color: r.id === selectedResortId ? "#FFD700" : "#B8C9D9", borderColor: "rgba(255,255,255,0.04)" }}>
                   {r.name}
                 </button>
               ))}
@@ -156,7 +156,7 @@ function DashboardContent() {
           <button key={park.id} onClick={() => setSelectedParkIdx(i)}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-body font-500 flex-shrink-0 transition-all"
             style={selectedParkIdx === i
-              ? { background: "rgba(245,200,66,0.12)", color: "#F5C842", border: "1px solid rgba(245,200,66,0.25)" }
+              ? { background: "rgba(255,215,0,0.1)", color: "#FFD700", border: "1px solid rgba(245,200,66,0.25)" }
               : { color: "#B8C9D9", border: "1px solid transparent" }}>
             <span>{park.emoji}</span>
             <span className="hidden sm:block">{park.name}</span>
@@ -171,7 +171,7 @@ function DashboardContent() {
           style={{ borderColor: "rgba(255,255,255,0.04)", background: "rgba(26,46,69,0.3)" }}>
           {[
             { label: "Open rides", value: `${curParkData.openAttractions}/${curParkData.totalAttractions}`, color: "#4ECDC4" },
-            { label: "Avg wait", value: `${curParkData.avgWait}min`, color: "#F5C842" },
+            { label: "Avg wait", value: `${curParkData.avgWait}min`, color: "#FFD700" },
             { label: "Walk-ons", value: String(curParkData.walkOns.length), color: "#7ED321" },
           ].map(({ label, value, color }) => (
             <div key={label} className="flex items-center gap-1.5 flex-shrink-0">
@@ -356,7 +356,7 @@ function DashboardContent() {
 
       {/* Bottom quick-access bar */}
       <div className="border-t px-4 py-3 flex items-center justify-between flex-shrink-0"
-        style={{ borderColor: "rgba(245,200,66,0.1)", background: "rgba(13,27,42,0.95)" }}>
+        style={{ borderColor: "rgba(255,215,0,0.08)", background: "rgba(13,27,42,0.95)" }}>
         <div className="flex items-center gap-2">
           {curParkData?.walkOns.slice(0,2).map((ride,i) => (
             <div key={i} className="flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] font-body"
@@ -367,7 +367,7 @@ function DashboardContent() {
         </div>
         <Link href={`/plan?resort=${selectedResortId}`}
           className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-body font-600 text-park-night"
-          style={{ background: "linear-gradient(135deg, #F5C842, #E8A020)" }}>
+          style={{ background: "linear-gradient(135deg, #FFD700, #FFA500)" }}>
           <Sparkles size={11} />Ask AI
         </Link>
       </div>

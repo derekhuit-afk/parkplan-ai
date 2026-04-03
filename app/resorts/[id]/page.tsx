@@ -387,7 +387,7 @@ export default async function ResortPage({ params }: { params: Promise<{ id: str
         {/* Nav bar */}
         <div className="relative z-10 flex items-center justify-between px-4 sm:px-6 py-4">
           <Link href="/" className="flex items-center gap-2 group">
-            <ArrowLeft size={16} className="text-park-mist group-hover:text-park-gold transition-colors" />
+            <ArrowLeft size={16} className="transition-colors" style={{ color: "rgba(200,216,240,0.7)" }} />
             <div className="w-7 h-7 rounded-full bg-gold-gradient flex items-center justify-center">
               <MapPin size={13} className="text-park-night" />
             </div>
@@ -399,7 +399,7 @@ export default async function ResortPage({ params }: { params: Promise<{ id: str
           <Link
             href={`/plan?resort=${id}`}
             className="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-body font-600 text-park-night"
-            style={{ background: "linear-gradient(135deg, #F5C842, #E8A020)" }}
+            style={{ background: "linear-gradient(135deg, #FFD700 0%, #FFA500 50%, #C8860A 100%)" }}
           >
             <Sparkles size={13} />
             Plan This Trip
@@ -649,7 +649,7 @@ export default async function ResortPage({ params }: { params: Promise<{ id: str
               href={`/plan?resort=${id}`}
               className="flex items-center justify-center gap-2 w-full py-4 rounded-2xl font-body font-700 text-park-night transition-all hover:scale-[1.02]"
               style={{
-                background: "linear-gradient(135deg, #F5C842, #E8A020)",
+                background: "linear-gradient(135deg, #FFD700 0%, #FFA500 50%, #C8860A 100%)",
                 boxShadow: "0 8px 24px rgba(245,200,66,0.25)",
               }}
             >

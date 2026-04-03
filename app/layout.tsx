@@ -3,20 +3,16 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "ParkPlan.ai — AI-Powered Theme Park Trip Planner",
-  description: "Skip the overwhelm. Get AI-built itineraries, live wait times, budget breakdowns, and hotel picks for every Disney resort and Universal park — free forever.",
+  description: "Where magic meets intelligence. AI-built itineraries, live wait times, budget breakdowns, and hotel picks for every Disney resort and Universal park — free forever.",
   keywords: "Disney trip planner, AI itinerary, Walt Disney World, Disneyland, theme park wait times, park budget planner",
   openGraph: {
-    title: "ParkPlan.ai — Plan Your Perfect Park Day",
-    description: "AI-powered itineraries for every Disney resort and Universal park. Free forever.",
+    title: "ParkPlan.ai — Where Magic Meets Intelligence",
+    description: "AI-powered theme park planning for families and superfans. Free forever.",
     type: "website",
   },
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <head>
