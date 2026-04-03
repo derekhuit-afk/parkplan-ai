@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://parkplan-ai.vercel.app/sitemap.xml

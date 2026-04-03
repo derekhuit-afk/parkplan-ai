@@ -17,10 +17,10 @@ const RESORT_NAMES: Record<string, string> = {
 };
 
 const QUICK_PROMPTS = [
-  { icon: Map,       label: "Build my itinerary",      prompt: "Build me a full optimized day itinerary. What's the best order to do the rides given current wait times?" },
-  { icon: Clock,     label: "Minimize wait times",     prompt: "What rides are walk-ons right now and what's the best strategy to avoid long waits today?" },
-  { icon: DollarSign,label: "Full budget breakdown",   prompt: "Give me a complete budget breakdown — tickets, food, hotel, and any extras." },
-  { icon: Hotel,     label: "Best hotels nearby",      prompt: "What are the best hotels for my trip? Compare on-site vs off-site options and prices." },
+  { icon: Map,       label: "Build my itinerary",      prompt: "Build me a full optimized day itinerary for today with a time-stamped schedule. Factor in current wait times and Lightning Lane strategy." },
+  { icon: Clock,     label: "Shortest waits right now", prompt: "What are the walk-on rides right now and what's the optimal strategy to minimize waits today?" },
+  { icon: DollarSign,label: "Full 2026 budget",        prompt: "Give me a complete 2026 cost breakdown — tickets, Lightning Lane, food (quick service and table service), and hotel options with prices." },
+  { icon: Hotel,     label: "Best hotels",             prompt: "What are the best hotel options for my trip in 2026? Compare on-site vs off-site with current prices and perks." },
 ];
 
 interface Message { role: "user" | "assistant"; content: string; }

@@ -34,7 +34,7 @@ export default function NavBar() {
           {/* Desktop links — very few, very clean */}
           <div className="hidden md:flex items-center gap-7">
             {[
-              { label: "Resorts",   href: "#resorts" },
+              { label: "Resorts",   href: "/#resorts" },
               { label: "Dashboard", href: "/dashboard" },
               { label: "My Trips",  href: "/trips" },
             ].map(({ label, href }) => (
@@ -64,7 +64,7 @@ export default function NavBar() {
         <div className="md:hidden border-t px-5 py-6 flex flex-col gap-5"
           style={{ background: "rgba(0,25,75,0.98)", borderColor: "rgba(255,215,0,0.12)" }}>
           {[
-            { label: "Resorts",   href: "#resorts" },
+            { label: "Resorts",   href: "/#resorts" },
             { label: "Dashboard", href: "/dashboard" },
             { label: "My Trips",  href: "/trips" },
           ].map(({ label, href }) => (
