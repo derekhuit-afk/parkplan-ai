@@ -18,7 +18,7 @@ export default function HowItWorks() {
           How It Works
         </p>
         <h2 className="font-display font-700 mb-14"
-          style={{ fontSize: "clamp(1.8rem, 4vw, 2.8rem)", color: "#FFF8E7", fontFamily: "var(--font-cinzel)" }}>
+          style={{ fontSize: "clamp(1.8rem, 4vw, 2.8rem)", color: "#FFFFFF", fontFamily: "var(--font-cinzel)" }}>
           Three Steps to <span className="text-script">Your Perfect Day</span>
         </h2>
 
@@ -40,10 +40,10 @@ export default function HowItWorks() {
                 {s.emoji}
               </div>
               <h3 className="font-display font-700 text-base mb-2"
-                style={{ color: "#FFF8E7", fontFamily: "var(--font-cinzel)" }}>
+                style={{ color: "#FFFFFF", fontFamily: "var(--font-cinzel)" }}>
                 {s.title}
               </h3>
-              <p className="font-body text-sm" style={{ color: "rgba(200,216,240,0.65)", fontFamily: "var(--font-nunito)" }}>
+              <p className="font-body text-sm" style={{ color: "rgba(220,235,255,0.85)", fontFamily: "var(--font-nunito)" }}>
                 {s.desc}
               </p>
             </div>

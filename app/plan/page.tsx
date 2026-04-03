@@ -41,7 +41,7 @@ function SaveModal({ onSave, onCancel, resortName }: {
         <h3 style={{ fontFamily: "var(--font-cinzel)", fontWeight: 700, fontSize: "1.1rem", color: "#FFF8E7", marginBottom: "4px" }}>
           Save This Trip
         </h3>
-        <p className="font-body text-xs mb-5" style={{ color: "rgba(200,216,240,0.6)", fontFamily: "var(--font-nunito)" }}>
+        <p className="font-body text-xs mb-5" style={{ color: "rgba(220,235,255,0.75)", fontFamily: "var(--font-nunito)" }}>
           Saved on this device. No account needed.
         </p>
         <div className="space-y-3">
@@ -155,10 +155,10 @@ function PlanContent() {
         style={{ background: "rgba(0,25,75,0.97)", borderColor: "rgba(255,215,0,0.12)", backdropFilter: "blur(16px)" }}>
 
         <Link href="/" className="flex items-center gap-2 group">
-          <ArrowLeft size={16} style={{ color: "rgba(200,216,240,0.6)" }} className="group-hover:text-yellow-300 transition-colors" />
+          <ArrowLeft size={16} style={{ color: "rgba(220,235,255,0.75)" }} className="group-hover:text-yellow-300 transition-colors" />
           <span className="text-lg">🏰</span>
           <span style={{ fontFamily: "var(--font-cinzel)", fontWeight: 700, fontSize: "1rem", color: "#FFD700" }}>
-            ParkPlan<span style={{ color: "rgba(200,216,240,0.4)", fontWeight: 400 }}>.ai</span>
+            ParkPlan<span style={{ color: "rgba(220,235,255,0.55)", fontWeight: 400 }}>.ai</span>
           </span>
         </Link>
 
@@ -176,7 +176,7 @@ function PlanContent() {
           <div className="relative">
             <button onClick={() => setShowTrips(!showTrips)}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-body border transition-all"
-              style={{ borderColor: "rgba(255,215,0,0.2)", color: trips.length > 0 ? "#FFD700" : "rgba(200,216,240,0.5)", fontFamily: "var(--font-nunito)" }}>
+              style={{ borderColor: "rgba(255,215,0,0.2)", color: trips.length > 0 ? "#FFD700" : "rgba(220,235,255,0.65)", fontFamily: "var(--font-nunito)" }}>
               <Bookmark size={12} />
               {trips.length > 0 ? `${trips.length}` : "Trips"}
               <ChevronDown size={10} className={`transition-transform ${showTrips ? "rotate-180" : ""}`} />
@@ -192,14 +192,14 @@ function PlanContent() {
                 </div>
                 {trips.length === 0 ? (
                   <div className="px-4 py-6 text-center">
-                    <p className="text-xs font-body" style={{ color: "rgba(200,216,240,0.5)", fontFamily: "var(--font-nunito)" }}>No saved trips yet</p>
+                    <p className="text-xs font-body" style={{ color: "rgba(220,235,255,0.65)", fontFamily: "var(--font-nunito)" }}>No saved trips yet</p>
                   </div>
                 ) : trips.slice(0, 6).map((trip) => (
                   <button key={trip.id} onClick={() => loadTrip(trip)}
                     className="w-full px-4 py-3 text-left border-b hover:bg-white/5 transition-colors"
                     style={{ borderColor: "rgba(255,255,255,0.04)" }}>
                     <div className="text-xs font-body font-600 truncate" style={{ color: "#FFF8E7", fontFamily: "var(--font-nunito)" }}>{trip.title}</div>
-                    <div className="text-[10px] font-body mt-0.5" style={{ color: "rgba(200,216,240,0.5)", fontFamily: "var(--font-nunito)" }}>
+                    <div className="text-[10px] font-body mt-0.5" style={{ color: "rgba(220,235,255,0.65)", fontFamily: "var(--font-nunito)" }}>
                       {trip.resortName} · {new Date(trip.savedAt).toLocaleDateString()}
                     </div>
                   </button>
@@ -225,11 +225,11 @@ function PlanContent() {
           {activeTripId && (
             <button onClick={() => { deleteTrip(activeTripId); setActiveTripId(null); setSaved(false); }}
               className="p-1.5 rounded-lg hover:bg-red-500/10 transition-colors">
-              <Trash2 size={13} style={{ color: "rgba(200,216,240,0.4)" }} />
+              <Trash2 size={13} style={{ color: "rgba(220,235,255,0.55)" }} />
             </button>
           )}
           <button onClick={reset} className="p-1.5 rounded-lg hover:bg-white/5 transition-colors">
-            <RotateCcw size={14} style={{ color: "rgba(200,216,240,0.5)" }} />
+            <RotateCcw size={14} style={{ color: "rgba(220,235,255,0.65)" }} />
           </button>
         </div>
       </header>
@@ -248,7 +248,7 @@ function PlanContent() {
               <div className="max-w-[85%] sm:max-w-[78%] px-4 py-3 text-sm font-body leading-relaxed"
                 style={msg.role === "user"
                   ? { background: "rgba(255,215,0,0.1)", border: "1px solid rgba(255,215,0,0.2)", borderRadius: "18px 18px 4px 18px", color: "#FFF8E7", fontFamily: "var(--font-nunito)" }
-                  : { background: "rgba(18,41,110,0.6)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: "18px 18px 18px 4px", color: "#C8D8F0", fontFamily: "var(--font-nunito)" }}
+                  : { background: "rgba(18,41,110,0.6)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: "18px 18px 18px 4px", color: "#E0EEFF", fontFamily: "var(--font-nunito)" }}
                 dangerouslySetInnerHTML={{ __html: fmt(msg.content) }} />
             </div>
           ))}
@@ -315,10 +315,10 @@ function PlanContent() {
             <button onClick={() => send()} disabled={loading || !input.trim()}
               className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 transition-all disabled:opacity-30"
               style={{ background: loading || !input.trim() ? "rgba(18,41,110,0.8)" : "linear-gradient(135deg, #FFD700, #FFA500)" }}>
-              <Send size={16} style={{ color: loading || !input.trim() ? "rgba(200,216,240,0.4)" : "#00194B" }} />
+              <Send size={16} style={{ color: loading || !input.trim() ? "rgba(220,235,255,0.55)" : "#00194B" }} />
             </button>
           </div>
-          <p className="text-[10px] text-center mt-2 font-body" style={{ color: "rgba(200,216,240,0.3)", fontFamily: "var(--font-nunito)" }}>
+          <p className="text-[10px] text-center mt-2 font-body" style={{ color: "rgba(220,235,255,0.45)", fontFamily: "var(--font-nunito)" }}>
             Live park data · Free forever · Not affiliated with Disney or Universal
           </p>
         </div>

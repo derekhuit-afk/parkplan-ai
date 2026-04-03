@@ -23,7 +23,7 @@ export default function FeaturesSection() {
             What ParkPlan Does
           </p>
           <h2 className="font-display font-700"
-            style={{ fontSize: "clamp(1.8rem, 4vw, 2.8rem)", color: "#FFF8E7", fontFamily: "var(--font-cinzel)" }}>
+            style={{ fontSize: "clamp(1.8rem, 4vw, 2.8rem)", color: "#FFFFFF", fontFamily: "var(--font-cinzel)" }}>
             Eight Tools. One Perfect Day.
           </h2>
         </div>
@@ -38,11 +38,11 @@ export default function FeaturesSection() {
                   <Icon size={18} style={{ color: f.color }} />
                 </div>
                 <h3 className="font-display font-700 text-sm mb-1.5"
-                  style={{ color: "#FFF8E7", fontFamily: "var(--font-cinzel)" }}>
+                  style={{ color: "#FFFFFF", fontFamily: "var(--font-cinzel)" }}>
                   {f.title}
                 </h3>
                 <p className="font-body text-xs leading-relaxed"
-                  style={{ color: "rgba(200,216,240,0.65)", fontFamily: "var(--font-nunito)" }}>
+                  style={{ color: "rgba(220,235,255,0.85)", fontFamily: "var(--font-nunito)" }}>
                   {f.desc}
                 </p>
               </div>

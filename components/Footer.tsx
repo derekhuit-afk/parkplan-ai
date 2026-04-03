@@ -25,7 +25,7 @@ export default function Footer() {
             ].map(({ label, href }) => (
               <Link key={label} href={href}
                 className="font-body text-sm transition-colors hover:opacity-100"
-                style={{ color: "rgba(200,216,240,0.5)", fontFamily: "var(--font-nunito)" }}>
+                style={{ color: "rgba(220,235,255,0.65)", fontFamily: "var(--font-nunito)" }}>
                 {label}
               </Link>
             ))}
@@ -35,10 +35,10 @@ export default function Footer() {
         <div className="gold-divider mb-6" />
 
         <div className="flex flex-col sm:flex-row items-center justify-between gap-2">
-          <p className="font-body text-xs" style={{ color: "rgba(200,216,240,0.3)", fontFamily: "var(--font-nunito)" }}>
+          <p className="font-body text-xs" style={{ color: "rgba(220,235,255,0.45)", fontFamily: "var(--font-nunito)" }}>
             © {new Date().getFullYear()} ParkPlan.ai · Not affiliated with Disney or Universal
           </p>
-          <p className="font-body text-xs" style={{ color: "rgba(200,216,240,0.3)", fontFamily: "var(--font-nunito)" }}>
+          <p className="font-body text-xs" style={{ color: "rgba(220,235,255,0.45)", fontFamily: "var(--font-nunito)" }}>
             Free forever · Built for park families ✨
           </p>
         </div>

@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { ArrowRight, Star } from "lucide-react";
+import { Star } from "lucide-react";
 
 interface Resort {
   id: string; name: string; location: string; emoji: string;
@@ -8,84 +8,108 @@ interface Resort {
 }
 
 const RESORTS: Resort[] = [
-  { id: "wdw",               name: "Walt Disney World",    location: "Orlando, FL",       emoji: "🏰", tagline: "The Most Magical Place on Earth",        parks: 4, accentColor: "#FFD700", featured: true },
-  { id: "disneyland",        name: "Disneyland Resort",    location: "Anaheim, CA",       emoji: "✨", tagline: "The Happiest Place on Earth",             parks: 2, accentColor: "#FF9EBB" },
-  { id: "paris",             name: "Disneyland Paris",     location: "Chessy, France",    emoji: "🗼", tagline: "Où la Magie Prend Vie",                   parks: 2, accentColor: "#87CEEB" },
-  { id: "tokyo",             name: "Tokyo Disney Resort",  location: "Urayasu, Japan",    emoji: "🌸", tagline: "A World of Harmony and Magic",            parks: 2, accentColor: "#FFB7C5" },
-  { id: "hongkong",          name: "Hong Kong Disneyland", location: "Lantau Island, HK", emoji: "🏮", tagline: "Where Fantasy Meets Asia",                parks: 1, accentColor: "#FFA500" },
-  { id: "shanghai",          name: "Shanghai Disney",      location: "Pudong, China",     emoji: "🐉", tagline: "Authentically Disney, Distinctly Chinese", parks: 1, accentColor: "#7FDB8A" },
-  { id: "universal-orlando", name: "Universal Orlando",    location: "Orlando, FL",       emoji: "🎬", tagline: "Vacation Like You Mean It",               parks: 3, accentColor: "#C084FC" },
+  { id: "wdw",               name: "Walt Disney World",    location: "Orlando, FL",       emoji: "🏰", tagline: "The Most Magical Place on Earth",         parks: 4, accentColor: "#FFD700", featured: true },
+  { id: "disneyland",        name: "Disneyland Resort",    location: "Anaheim, CA",       emoji: "✨", tagline: "The Happiest Place on Earth",              parks: 2, accentColor: "#FF9EBB" },
+  { id: "paris",             name: "Disneyland Paris",     location: "Chessy, France",    emoji: "🗼", tagline: "Où la Magie Prend Vie",                    parks: 2, accentColor: "#87CEEB" },
+  { id: "tokyo",             name: "Tokyo Disney Resort",  location: "Urayasu, Japan",    emoji: "🌸", tagline: "A World of Harmony and Magic",             parks: 2, accentColor: "#FFB7C5" },
+  { id: "hongkong",          name: "Hong Kong Disneyland", location: "Lantau Island, HK", emoji: "🏮", tagline: "Where Fantasy Meets Asia",                 parks: 1, accentColor: "#FFA500" },
+  { id: "shanghai",          name: "Shanghai Disney Resort",location: "Pudong, China",    emoji: "🐉", tagline: "Authentically Disney, Distinctly Chinese",  parks: 1, accentColor: "#7FDB8A" },
+  { id: "universal-orlando", name: "Universal Orlando",    location: "Orlando, FL",       emoji: "🎬", tagline: "Vacation Like You Mean It",                parks: 3, accentColor: "#C084FC" },
 ];
 
 export default function ResortsSection() {
   return (
-    <section id="resorts" className="py-24 px-5 sm:px-8 relative">
+    <section id="resorts" className="py-20 px-4 sm:px-8">
       <div className="max-w-6xl mx-auto">
 
-        {/* Section header — simple */}
-        <div className="text-center mb-12">
-          <p className="font-body text-xs font-700 uppercase tracking-[0.2em] mb-3"
-            style={{ color: "rgba(255,215,0,0.7)", fontFamily: "var(--font-nunito)" }}>
+        {/* Header */}
+        <div className="text-center mb-10">
+          <p style={{ fontFamily: "var(--font-nunito)", fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(255,215,0,0.65)", marginBottom: "10px" }}>
             Choose Your Destination
           </p>
-          <h2 className="font-display font-700 mb-3"
-            style={{ fontSize: "clamp(1.8rem, 4vw, 2.8rem)", color: "#FFF8E7", fontFamily: "var(--font-cinzel)" }}>
+          <h2 style={{ fontFamily: "var(--font-cinzel)", fontWeight: 700, fontSize: "clamp(1.6rem, 4vw, 2.5rem)", color: "#FFFFFF", marginBottom: "10px" }}>
             Every Magical Resort, Covered
           </h2>
-          <p className="font-body text-base max-w-md mx-auto"
-            style={{ color: "rgba(200,216,240,0.7)", fontFamily: "var(--font-nunito)" }}>
-            Pick a resort and we&apos;ll build your perfect day — AI plans, live waits, and all.
+          <p style={{ fontFamily: "var(--font-nunito)", fontSize: "1rem", color: "rgba(220,235,255,0.75)", maxWidth: "440px", margin: "0 auto" }}>
+            Pick a resort and we&apos;ll build your perfect day — AI plans, live wait times, and all.
           </p>
         </div>
 
-        {/* Resort grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-10">
+        {/* Resort list — vertical on mobile, grid on desktop */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {RESORTS.map((resort) => (
-            <Link key={resort.id} href={`/resorts/${resort.id}`}
-              className="card group relative p-6 flex flex-col">
+            <div key={resort.id}
+              className="rounded-2xl overflow-hidden"
+              style={{
+                background: "rgba(255,255,255,0.06)",
+                border: "1px solid rgba(255,255,255,0.12)",
+              }}>
 
-              {/* Top color line */}
-              <div className="absolute top-0 left-8 right-8 h-px rounded-full"
-                style={{ background: `linear-gradient(90deg, transparent, ${resort.accentColor}70, transparent)` }} />
-
-              {resort.featured && (
-                <div className="absolute top-4 right-4 flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-body font-700"
-                  style={{ background: "rgba(255,215,0,0.1)", color: "#FFD700", border: "1px solid rgba(255,215,0,0.25)" }}>
-                  <Star size={8} fill="#FFD700" /> Popular
+              {/* Card body */}
+              <div className="p-5">
+                {/* Top row: emoji + featured badge */}
+                <div className="flex items-center justify-between mb-3">
+                  <span style={{ fontSize: "2rem", lineHeight: 1 }}>{resort.emoji}</span>
+                  {resort.featured && (
+                    <div className="flex items-center gap-1 px-2.5 py-0.5 rounded-full"
+                      style={{ background: "rgba(255,215,0,0.15)", border: "1px solid rgba(255,215,0,0.3)" }}>
+                      <Star size={9} fill="#FFD700" style={{ color: "#FFD700" }} />
+                      <span style={{ fontFamily: "var(--font-nunito)", fontSize: "0.6rem", fontWeight: 700, color: "#FFD700" }}>Popular</span>
+                    </div>
+                  )}
                 </div>
-              )}
 
-              <div className="text-4xl mb-4 transition-transform duration-300 group-hover:scale-110 w-fit"
-                style={{ filter: `drop-shadow(0 4px 12px ${resort.accentColor}50)` }}>
-                {resort.emoji}
+                {/* Resort name — high contrast white */}
+                <h3 style={{
+                  fontFamily: "var(--font-cinzel)",
+                  fontWeight: 700,
+                  fontSize: "1.05rem",
+                  color: "#FFFFFF",
+                  marginBottom: "6px",
+                  lineHeight: 1.25,
+                }}>
+                  {resort.name}
+                </h3>
+
+                {/* Tagline — light not script, readable */}
+                <p style={{
+                  fontFamily: "var(--font-nunito)",
+                  fontSize: "0.8rem",
+                  fontStyle: "italic",
+                  color: resort.accentColor,
+                  marginBottom: "4px",
+                  opacity: 0.9,
+                }}>
+                  &ldquo;{resort.tagline}&rdquo;
+                </p>
+
+                {/* Location */}
+                <p style={{
+                  fontFamily: "var(--font-nunito)",
+                  fontSize: "0.75rem",
+                  color: "rgba(200,220,255,0.55)",
+                  marginBottom: "14px",
+                }}>
+                  {resort.location} · {resort.parks} {resort.parks === 1 ? "park" : "parks"}
+                </p>
+
+                {/* Plan button — full width, prominent */}
+                <Link href={`/plan?resort=${resort.id}`}
+                  className="btn-primary block text-center w-full"
+                  style={{
+                    padding: "0.75rem 1rem",
+                    fontSize: "0.9rem",
+                    fontWeight: 800,
+                    borderRadius: "12px",
+                  }}>
+                  ✨ Plan {resort.name.split(" ")[0]} Trip
+                </Link>
               </div>
-
-              <h3 className="font-display font-700 text-base leading-snug mb-1"
-                style={{ color: "#FFF8E7", fontFamily: "var(--font-cinzel)" }}>
-                {resort.name}
-              </h3>
-
-              <p className="text-script text-sm mb-3 leading-snug"
-                style={{ color: `${resort.accentColor}cc`, fontSize: "0.85rem" }}>
-                &ldquo;{resort.tagline}&rdquo;
-              </p>
-
-              <p className="font-body text-xs mb-5" style={{ color: "rgba(200,216,240,0.5)", fontFamily: "var(--font-nunito)" }}>
-                {resort.location} · {resort.parks} {resort.parks === 1 ? "park" : "parks"}
-              </p>
-
-              {/* Plan CTA inline */}
-              <Link href={`/plan?resort=${resort.id}`}
-                className="mt-auto btn-primary text-xs py-2.5 px-4 w-full justify-center font-700"
-                onClick={(e) => e.stopPropagation()}
-                style={{ fontSize: "0.8rem", padding: "0.6rem 1rem" }}>
-                Plan This Resort →
-              </Link>
-            </Link>
+            </div>
           ))}
         </div>
 
-        <div className="gold-divider" />
+        <div className="gold-divider mt-14" />
       </div>
     </section>
   );

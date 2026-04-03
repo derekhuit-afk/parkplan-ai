@@ -69,7 +69,7 @@ export default function HeroSection() {
 
         {/* Small label */}
         <p className="anim-appear delay-100 font-body text-xs font-600 uppercase tracking-[0.2em] mb-6"
-          style={{ color: "rgba(255,215,0,0.75)", fontFamily: "var(--font-nunito)" }}>
+          style={{ color: "rgba(255,215,0,0.9)", fontFamily: "var(--font-nunito)" }}>
           ✦ AI-Powered Theme Park Planning ✦
         </p>
 
@@ -88,7 +88,7 @@ export default function HeroSection() {
 
         {/* Single focused subhead */}
         <p className="anim-rise delay-400 font-body text-lg max-w-xl mx-auto mb-12 leading-relaxed"
-          style={{ color: "rgba(200,216,240,0.8)", fontFamily: "var(--font-nunito)" }}>
+          style={{ color: "rgba(220,235,255,0.9)", fontFamily: "var(--font-nunito)" }}>
           Live wait times, AI itineraries, budget breakdowns, and hotel picks
           for every Disney resort and Universal park. Free, always.
         </p>
@@ -111,7 +111,7 @@ export default function HeroSection() {
 
         {/* Resort quick-select — simple pills */}
         <div className="anim-appear delay-700 flex flex-wrap items-center justify-center gap-2 mb-4">
-          <span className="font-body text-xs" style={{ color: "rgba(200,216,240,0.5)", fontFamily: "var(--font-nunito)" }}>
+          <span className="font-body text-xs" style={{ color: "rgba(220,235,255,0.7)", fontFamily: "var(--font-nunito)" }}>
             Jump to:
           </span>
           {RESORTS.map((r) => (
@@ -120,7 +120,7 @@ export default function HeroSection() {
               style={{
                 background: "rgba(255,215,0,0.08)",
                 border: "1px solid rgba(255,215,0,0.2)",
-                color: "rgba(255,215,0,0.85)",
+                color: "#FFD700",
                 fontFamily: "var(--font-nunito)",
               }}>
               {r.emoji} {r.label}

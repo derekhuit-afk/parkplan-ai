@@ -27,7 +27,7 @@ export default function NavBar() {
           <Link href="/" className="flex items-center gap-2.5 group">
             <span className="text-2xl" style={{ filter: "drop-shadow(0 0 6px rgba(255,215,0,0.5))" }}>🏰</span>
             <span style={{ fontFamily: "var(--font-cinzel)", fontSize: "1.15rem", fontWeight: 700, color: "#FFD700", letterSpacing: "0.04em" }}>
-              ParkPlan<span style={{ color: "rgba(200,216,240,0.5)", fontWeight: 400 }}>.ai</span>
+              ParkPlan<span style={{ color: "rgba(220,235,255,0.65)", fontWeight: 400 }}>.ai</span>
             </span>
           </Link>
 
@@ -40,7 +40,7 @@ export default function NavBar() {
             ].map(({ label, href }) => (
               <a key={label} href={href}
                 className="font-body text-sm font-500 transition-colors duration-200 hover:opacity-100"
-                style={{ color: "rgba(200,216,240,0.7)", fontFamily: "var(--font-nunito)" }}>
+                style={{ color: "rgba(220,235,255,0.85)", fontFamily: "var(--font-nunito)" }}>
                 {label}
               </a>
             ))}
@@ -69,7 +69,7 @@ export default function NavBar() {
             { label: "My Trips",  href: "/trips" },
           ].map(({ label, href }) => (
             <a key={label} href={href} onClick={() => setOpen(false)}
-              className="text-base font-500" style={{ color: "rgba(200,216,240,0.85)", fontFamily: "var(--font-nunito)" }}>
+              className="text-base font-500" style={{ color: "rgba(220,235,255,0.92)", fontFamily: "var(--font-nunito)" }}>
               {label}
             </a>
           ))}
