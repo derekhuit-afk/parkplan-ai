@@ -89,7 +89,7 @@ function PlanContent() {
 
   const welcome: Message = {
     role: "assistant",
-    content: `🏰 Welcome to ParkPlan.ai!\n\n${resortName !== "Your Park" ? `You're heading to **${resortName}** — excellent choice! ` : ""}I have live wait times, today's weather, and park hours ready.\n\nI can help you:\n🗺 **Build your day** — optimized itinerary using live data\n💰 **Break down costs** — tickets, food, hotel\n🏨 **Pick hotels** — on-site vs off-site\n⚡ **Right now** — walk-ons and shortest waits\n\nTap a button below or just ask me anything!`,
+    content: `🏰 **Welcome to ParkPlan.ai!**${resortName !== "Your Park" ? `\n\nPlanning **${resortName}**? I have live wait times, today\'s weather, and park hours loaded.` : "\n\nI have live wait times, weather, and park hours ready."}\n\nTap a button below to get started, or ask me anything!`,
   };
 
   useEffect(() => {
@@ -235,7 +235,7 @@ function PlanContent() {
       </header>
 
       {/* ── Messages ──────────────────────── */}
-      <div className="flex-1 overflow-y-auto px-4 py-5 min-h-0" onClick={() => setShowTrips(false)}>
+      <div className={messages.length <= 1 ? "flex-shrink-0 px-4 pt-5 pb-2" : "flex-1 overflow-y-auto px-4 py-5 min-h-0"} onClick={() => setShowTrips(false)}>
         <div className="max-w-2xl mx-auto space-y-4">
           {messages.map((msg, i) => (
             <div key={i} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
@@ -274,29 +274,67 @@ function PlanContent() {
 
       {/* ── Quick Prompt Buttons ───────────── */}
       {messages.length <= 1 && (
-        <div className="flex-shrink-0 px-4 pb-3" onClick={() => setShowTrips(false)}>
-          <div className="max-w-2xl mx-auto grid grid-cols-2 gap-2.5">
+        <div className="flex-shrink-0 px-4 pb-4" onClick={() => setShowTrips(false)}>
+          <p style={{
+            fontFamily: "var(--font-nunito)",
+            fontSize: "0.7rem",
+            fontWeight: 700,
+            letterSpacing: "0.1em",
+            textTransform: "uppercase",
+            color: "rgba(255,215,0,0.6)",
+            textAlign: "center",
+            marginBottom: "10px",
+          }}>
+            Quick Start
+          </p>
+          <div className="max-w-2xl mx-auto flex flex-col gap-3">
             {QUICK_PROMPTS.map(({ icon: Icon, label, prompt }) => (
               <button key={label} onClick={() => send(prompt)}
-                className="flex items-center gap-2.5 px-4 py-3.5 rounded-2xl text-left transition-all hover:scale-[1.02] font-body"
+                className="flex items-center gap-4 w-full text-left transition-all active:scale-[0.98]"
                 style={{
-                  background: "rgba(18,41,110,0.7)",
-                  border: "1px solid rgba(255,215,0,0.2)",
-                  color: "#FFF8E7",
+                  background: "rgba(255,255,255,0.07)",
+                  border: "1px solid rgba(255,215,0,0.22)",
+                  borderRadius: "16px",
+                  padding: "1rem 1.1rem",
+                  color: "#FFFFFF",
                   fontFamily: "var(--font-nunito)",
-                  fontSize: "0.8rem",
-                  fontWeight: 600,
                 }}>
-                <div className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0"
-                  style={{ background: "rgba(255,215,0,0.12)" }}>
-                  <Icon size={15} style={{ color: "#FFD700" }} />
+                {/* Icon orb */}
+                <div className="flex items-center justify-center flex-shrink-0"
+                  style={{
+                    width: "44px",
+                    height: "44px",
+                    borderRadius: "12px",
+                    background: "rgba(255,215,0,0.14)",
+                    border: "1px solid rgba(255,215,0,0.25)",
+                  }}>
+                  <Icon size={20} style={{ color: "#FFD700" }} />
                 </div>
-                {label}
+                {/* Label */}
+                <span style={{
+                  fontSize: "0.98rem",
+                  fontWeight: 700,
+                  lineHeight: 1.3,
+                }}>
+                  {label}
+                </span>
+                {/* Arrow */}
+                <span style={{
+                  marginLeft: "auto",
+                  color: "rgba(255,215,0,0.5)",
+                  fontSize: "1.1rem",
+                  flexShrink: 0,
+                }}>
+                  →
+                </span>
               </button>
             ))}
           </div>
         </div>
       )}
+
+      {/* Spacer — pushes input to bottom when in initial state */}
+      {messages.length <= 1 && <div className="flex-1" />}
 
       {/* ── Input Bar ─────────────────────── */}
       <div className="flex-shrink-0 px-4 pb-5 pt-3 border-t" style={{ borderColor: "rgba(255,215,0,0.1)" }}
