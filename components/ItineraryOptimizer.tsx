@@ -63,16 +63,16 @@ Rules:
 - type must be exactly: ride, show, food, or tip
 - wait field only for rides (integer minutes), omit for shows/food/tip`;
 
-      const res = await fetch("https://api.anthropic.com/v1/messages", {
+      const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          model: "claude-sonnet-4-20250514",
-          max_tokens: 600,
-          system: "You are a theme park optimization AI. Return only valid JSON arrays, no markdown.",
+          resortId: resortId,
           messages: [{ role: "user", content: prompt }],
+          system: "You are a theme park optimization AI. Return only valid JSON arrays, no markdown, no explanation.",
         }),
       });
+      if (!res.ok) throw new Error(`API ${res.status}`);
       const data = await res.json();
       const text = data.content?.[0]?.text || "[]";
       const clean = text.replace(/```json|```/g, "").trim();
