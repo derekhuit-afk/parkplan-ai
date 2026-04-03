@@ -124,6 +124,13 @@ export default function HeroSection() {
             <Sparkles size={18} />
             Start Planning — It&apos;s Free
           </Link>
+          <Link
+            href="/dashboard"
+            className="flex items-center gap-2 px-8 py-4 rounded-full text-base font-body font-500 text-park-cream transition-all duration-200 hover:bg-white/10 w-full sm:w-auto justify-center border"
+            style={{ borderColor: "rgba(255,248,231,0.2)" }}
+          >
+            🗺 Live Dashboard
+          </Link>
           <a
             href="#resorts"
             className="flex items-center gap-2 px-8 py-4 rounded-full text-base font-body font-500 text-park-cream transition-all duration-200 hover:bg-white/10 w-full sm:w-auto justify-center border"

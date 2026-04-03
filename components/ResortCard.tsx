@@ -91,7 +91,7 @@ const RESORTS: Resort[] = [
 function ResortCard({ resort }: { resort: Resort }) {
   return (
     <Link
-      href={`/resorts/${resort.id}`}
+  href={`/resorts/${resort.id}`}
       className="group relative flex flex-col p-5 sm:p-6 rounded-2xl border transition-all duration-300 card-glow overflow-hidden"
       style={{
         background: resort.color,

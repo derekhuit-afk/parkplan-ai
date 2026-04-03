@@ -92,6 +92,7 @@ export default function NavBar() {
             { label: "Resorts", href: "#resorts" },
             { label: "Features", href: "#features" },
             { label: "How It Works", href: "#how-it-works" },
+            { label: "Dashboard", href: "/dashboard" },
             { label: "My Trips", href: "/trips" },
           ].map((item) => (
             <a
