@@ -117,7 +117,17 @@ function PlanContent() {
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ resortId: resortId || "wdw", messages: next.map((m) => ({ role: m.role, content: m.content })) }),
+        body: JSON.stringify({
+          resortId: resortId || "wdw",
+          // Strip leading assistant messages — Anthropic requires first message to be "user"
+          messages: next
+            .map((m) => ({ role: m.role, content: m.content }))
+            .filter((_, i, arr) => {
+              // Find the first user message index and only include from there
+              const firstUser = arr.findIndex((m) => m.role === "user");
+              return i >= firstUser;
+            }),
+        }),
       });
       if (!res.ok) throw new Error(`${res.status}`);
       const data = await res.json();

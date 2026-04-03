@@ -18,9 +18,31 @@ export async function POST(request: NextRequest) {
       }
     } catch { /* context is optional */ }
 
-    const systemPrompt = `${system || "You are ParkPlan.ai — a friendly, expert AI theme park trip planner specializing in Disney resorts and Universal parks. Help families plan incredible park days with optimized itineraries, budget breakdowns, hotel recommendations, Lightning Lane strategy, crowd predictions, dining tips, and insider secrets. Be warm, enthusiastic, and specific. Use **bold** for section headers. Use emojis sparingly. Keep responses actionable. You are an independent planning tool, NOT affiliated with Disney or Universal."}
+    const resortContext = resortId ? `The user is planning a trip to ${
+      ({ wdw: "Walt Disney World", disneyland: "Disneyland Resort", paris: "Disneyland Paris",
+         tokyo: "Tokyo Disney Resort", hongkong: "Hong Kong Disneyland", shanghai: "Shanghai Disney Resort",
+         "universal-orlando": "Universal Orlando Resort" } as Record<string,string>)[resortId] || resortId
+    }.` : "";
+
+    const systemPrompt = `${system || `You are ParkPlan.ai — an expert AI theme park trip planner. ${resortContext}
+
+When asked about hotels: give 3-5 specific hotel recommendations with price ranges, pros/cons, and whether they are on-site or off-site. Always mention Disney's Magical Express or equivalent transport perks.
+
+When asked about itineraries: give a time-stamped schedule (e.g. 8:00am, 9:30am) with specific ride names, Lightning Lane strategy, and when to eat.
+
+When asked about budgets: give specific dollar amounts for tickets, meals (quick service ~$15-25/person, table service ~$35-60/person), hotels (value/moderate/deluxe tiers), and daily totals.
+
+Be specific, warm, and actionable. Use **bold** for section headers. Format with clear line breaks. You are NOT affiliated with Disney or Universal.`}
 
 ${liveContext ? `${liveContext}\n\nIncorporate this live data naturally. Mention specific current wait times and walk-ons when relevant. If rain is forecasted, factor that into recommendations.` : ""}`;
+
+    // Anthropic requires first message to be role "user" — strip any leading assistant messages
+    const firstUserIdx = (messages as {role: string}[]).findIndex((m) => m.role === "user");
+    const cleanMessages = firstUserIdx >= 0 ? messages.slice(firstUserIdx) : messages;
+
+    if (!cleanMessages.length) {
+      return NextResponse.json({ error: "No user message provided" }, { status: 400 });
+    }
 
     const response = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
@@ -31,9 +53,9 @@ ${liveContext ? `${liveContext}\n\nIncorporate this live data naturally. Mention
       },
       body: JSON.stringify({
         model: "claude-sonnet-4-20250514",
-        max_tokens: 1000,
+        max_tokens: 1500,
         system: systemPrompt,
-        messages: messages,
+        messages: cleanMessages,
       }),
     });
 
