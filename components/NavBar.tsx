@@ -1,117 +1,81 @@
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Menu, X, Sparkles } from "lucide-react";
-
-const STARS = Array.from({ length: 6 }, (_, i) => ({
-  top: `${[20,70,40,80,30,60][i]}%`,
-  left: `${[10,85,50,25,70,40][i]}%`,
-  delay: `${i * 0.4}s`,
-  size: [2,3,2,3,2,2][i],
-}));
+import { Menu, X } from "lucide-react";
 
 export default function NavBar() {
   const [scrolled, setScrolled] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
+    const fn = () => setScrolled(window.scrollY > 24);
+    window.addEventListener("scroll", fn);
+    return () => window.removeEventListener("scroll", fn);
   }, []);
 
   return (
-    <nav
-      className="fixed top-0 left-0 right-0 z-50 transition-all duration-500"
+    <nav className="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
       style={{
-        background: scrolled
-          ? "rgba(0,25,75,0.95)"
-          : "transparent",
-        backdropFilter: scrolled ? "blur(20px)" : "none",
-        borderBottom: scrolled ? "1px solid rgba(255,215,0,0.15)" : "none",
-        boxShadow: scrolled ? "0 4px 30px rgba(0,0,0,0.4)" : "none",
-      }}
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        background: scrolled ? "rgba(0,25,75,0.96)" : "transparent",
+        backdropFilter: scrolled ? "blur(18px)" : "none",
+        borderBottom: scrolled ? "1px solid rgba(255,215,0,0.12)" : "none",
+      }}>
+      <div className="max-w-6xl mx-auto px-5 sm:px-8">
         <div className="flex items-center justify-between h-16">
 
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-3 group">
-            {/* Castle icon */}
-            <div className="relative w-9 h-9 flex items-center justify-center">
-              <div className="absolute inset-0 rounded-full animate-pulse-gold"
-                style={{ background: "radial-gradient(circle, rgba(255,215,0,0.15) 0%, transparent 70%)" }} />
-              <span className="text-xl relative z-10" style={{ filter: "drop-shadow(0 0 8px rgba(255,215,0,0.8))" }}>🏰</span>
-            </div>
-            <div className="leading-none">
-              <div className="font-display text-lg font-700 tracking-wide"
-                style={{ color: "#FFD700", textShadow: "0 0 20px rgba(255,215,0,0.5)" }}>
-                ParkPlan
-              </div>
-              <div className="font-script text-xs" style={{ color: "rgba(200,216,240,0.8)" }}>
-                Where Magic Meets Intelligence
-              </div>
-            </div>
+          {/* Logo — minimal */}
+          <Link href="/" className="flex items-center gap-2.5 group">
+            <span className="text-2xl" style={{ filter: "drop-shadow(0 0 6px rgba(255,215,0,0.5))" }}>🏰</span>
+            <span style={{ fontFamily: "var(--font-cinzel)", fontSize: "1.15rem", fontWeight: 700, color: "#FFD700", letterSpacing: "0.04em" }}>
+              ParkPlan<span style={{ color: "rgba(200,216,240,0.5)", fontWeight: 400 }}>.ai</span>
+            </span>
           </Link>
 
-          {/* Desktop nav */}
-          <div className="hidden md:flex items-center gap-8">
+          {/* Desktop links — very few, very clean */}
+          <div className="hidden md:flex items-center gap-7">
             {[
-              { label: "Resorts", href: "#resorts" },
-              { label: "Features", href: "#features" },
+              { label: "Resorts",   href: "#resorts" },
               { label: "Dashboard", href: "/dashboard" },
-              { label: "My Trips", href: "/trips" },
-            ].map((item) => (
-              <a key={item.label} href={item.href}
-                className="font-body text-sm font-500 transition-all duration-200 hover:scale-105 relative group"
-                style={{ color: "rgba(200,216,240,0.85)" }}>
-                {item.label}
-                <span className="absolute -bottom-1 left-0 right-0 h-px scale-x-0 group-hover:scale-x-100 transition-transform duration-300"
-                  style={{ background: "linear-gradient(90deg, transparent, #FFD700, transparent)" }} />
+              { label: "My Trips",  href: "/trips" },
+            ].map(({ label, href }) => (
+              <a key={label} href={href}
+                className="font-body text-sm font-500 transition-colors duration-200 hover:opacity-100"
+                style={{ color: "rgba(200,216,240,0.7)", fontFamily: "var(--font-nunito)" }}>
+                {label}
               </a>
             ))}
           </div>
 
-          {/* CTA */}
-          <div className="hidden md:flex items-center gap-3">
-            <Link href="/plan"
-              className="btn-magic flex items-center gap-2 px-5 py-2.5 text-sm font-body font-700"
-              style={{ fontFamily: "var(--font-nunito)" }}>
-              <Sparkles size={14} className="text-park-night" />
-              <span style={{ color: "#00194B" }}>Plan My Trip</span>
+          {/* Single CTA */}
+          <div className="hidden md:block">
+            <Link href="/plan" className="btn-primary px-6 py-2.5 text-sm font-800">
+              ✨ Start Planning
             </Link>
           </div>
 
-          {/* Mobile toggle */}
-          <button className="md:hidden p-2 rounded-xl transition-colors hover:bg-white/5"
-            style={{ color: "#C8D8F0" }}
-            onClick={() => setMenuOpen(!menuOpen)}>
-            {menuOpen ? <X size={22} /> : <Menu size={22} />}
+          <button className="md:hidden p-2 rounded-lg" style={{ color: "#C8D8F0" }}
+            onClick={() => setOpen(!open)}>
+            {open ? <X size={22} /> : <Menu size={22} />}
           </button>
         </div>
       </div>
 
-      {/* Mobile menu */}
-      {menuOpen && (
-        <div className="md:hidden border-t px-4 py-5 flex flex-col gap-4"
-          style={{ background: "rgba(0,25,75,0.98)", borderColor: "rgba(255,215,0,0.15)" }}>
+      {open && (
+        <div className="md:hidden border-t px-5 py-6 flex flex-col gap-5"
+          style={{ background: "rgba(0,25,75,0.98)", borderColor: "rgba(255,215,0,0.12)" }}>
           {[
             { label: "Resorts",   href: "#resorts" },
-            { label: "Features",  href: "#features" },
             { label: "Dashboard", href: "/dashboard" },
             { label: "My Trips",  href: "/trips" },
-          ].map((item) => (
-            <a key={item.label} href={item.href}
-              onClick={() => setMenuOpen(false)}
-              className="font-body text-base font-500 py-1 transition-colors"
-              style={{ color: "rgba(200,216,240,0.9)" }}>
-              {item.label}
+          ].map(({ label, href }) => (
+            <a key={label} href={href} onClick={() => setOpen(false)}
+              className="text-base font-500" style={{ color: "rgba(200,216,240,0.85)", fontFamily: "var(--font-nunito)" }}>
+              {label}
             </a>
           ))}
-          <Link href="/plan" onClick={() => setMenuOpen(false)}
-            className="btn-magic flex items-center justify-center gap-2 py-3 mt-2 font-body font-700">
-            <Sparkles size={15} />
-            <span style={{ color: "#00194B" }}>Plan My Trip Free</span>
+          <Link href="/plan" onClick={() => setOpen(false)}
+            className="btn-primary py-3.5 text-base font-800 mt-1">
+            ✨ Start Planning Free
           </Link>
         </div>
       )}

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800;900&family=Nunito:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Dancing+Script:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;800&family=Nunito:wght@400;500;600;700;800&family=Dancing+Script:wght@600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -8,167 +8,144 @@
   --font-cinzel:  'Cinzel', Georgia, serif;
   --font-nunito:  'Nunito', system-ui, sans-serif;
   --font-dancing: 'Dancing Script', cursive;
-
-  /* Disney color tokens */
-  --disney-night:   #00194B;
-  --disney-deep:    #0A1F5C;
-  --disney-violet:  #3D1A78;
-  --disney-gold:    #FFD700;
-  --disney-amber:   #FFA500;
-  --disney-cream:   #FFF8E7;
-  --disney-mist:    #C8D8F0;
+  --gold:   #FFD700;
+  --night:  #00194B;
+  --purple: #3D1A78;
+  --cream:  #FFF8E7;
+  --mist:   #C8D8F0;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 
 body {
-  background: var(--disney-night);
-  background-image:
-    radial-gradient(ellipse 100% 60% at 50% 100%, rgba(61,26,120,0.5) 0%, transparent 70%),
-    radial-gradient(ellipse 60% 40% at 80% 20%,  rgba(18,41,110,0.4) 0%, transparent 60%),
-    radial-gradient(ellipse 40% 30% at 20% 30%,  rgba(61,26,120,0.2) 0%, transparent 50%);
-  color: var(--disney-cream);
+  background: #00194B;
+  background-image: radial-gradient(ellipse 100% 70% at 50% 100%, rgba(61,26,120,0.45) 0%, transparent 65%);
+  color: #FFF8E7;
   font-family: var(--font-nunito);
   overflow-x: hidden;
 }
 
-/* Custom scrollbar — golden */
-::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: #00194B; }
-::-webkit-scrollbar-thumb { background: rgba(255,215,0,0.3); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(255,215,0,0.6); }
+::-webkit-scrollbar-thumb { background: rgba(255,215,0,0.25); border-radius: 2px; }
 
-/* ─── Gold shimmer text ────────────────────── */
+/* Gold shimmer — used only on hero headline */
 .text-shimmer {
-  background: linear-gradient(90deg, #C8860A 0%, #FFD700 25%, #FFFDE0 50%, #FFD700 75%, #C8860A 100%);
+  background: linear-gradient(90deg, #C8860A 0%, #FFD700 35%, #FFFDE0 50%, #FFD700 65%, #C8860A 100%);
   background-size: 200% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  animation: shimmer 3.5s linear infinite;
+  animation: shimmer 4s linear infinite;
 }
 
-/* ─── Magical text (script style) ─────────── */
-.text-magic {
+/* Script accent */
+.text-script {
   font-family: var(--font-dancing);
-  background: linear-gradient(135deg, #FFD700, #FFA500);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: rgba(255,215,0,0.9);
 }
 
-/* ─── Starfield background ──────────────────  */
-.starfield {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  pointer-events: none;
-}
-.star {
-  position: absolute;
-  border-radius: 50%;
-  background: white;
-  animation: twinkle var(--dur, 2s) ease-in-out var(--delay, 0s) infinite;
-}
-
-/* ─── Disney card style ─────────────────────  */
-.disney-card {
-  background: linear-gradient(135deg,
-    rgba(18,41,110,0.7) 0%,
-    rgba(10,31,92,0.8) 50%,
-    rgba(61,26,120,0.3) 100%
-  );
-  border: 1px solid rgba(255,215,0,0.15);
-  backdrop-filter: blur(16px);
-  box-shadow: 0 8px 40px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,215,0,0.1);
-  transition: all 0.3s ease;
-}
-.disney-card:hover {
-  border-color: rgba(255,215,0,0.35);
-  box-shadow: 0 12px 50px rgba(0,0,0,0.5), 0 0 30px rgba(255,215,0,0.1), inset 0 1px 0 rgba(255,215,0,0.2);
-  transform: translateY(-2px);
-}
-
-/* ─── Magic button ──────────────────────────  */
-.btn-magic {
-  background: linear-gradient(135deg, #FFD700 0%, #FFA500 50%, #C8860A 100%);
+/* Primary CTA — large, warm gold */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: linear-gradient(160deg, #FFD700 0%, #FFA500 100%);
   color: #00194B;
-  font-weight: 700;
+  font-family: var(--font-nunito);
+  font-weight: 800;
   border-radius: 9999px;
-  position: relative;
-  overflow: hidden;
   transition: all 0.2s ease;
+  box-shadow: 0 6px 32px rgba(255,215,0,0.35), 0 2px 8px rgba(0,0,0,0.3);
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
 }
-.btn-magic::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, rgba(255,255,255,0.3), transparent);
-  opacity: 0;
-  transition: opacity 0.2s;
+.btn-primary:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 12px 48px rgba(255,215,0,0.5), 0 4px 16px rgba(0,0,0,0.3);
 }
-.btn-magic:hover::before { opacity: 1; }
-.btn-magic:hover { transform: scale(1.04); box-shadow: 0 0 30px rgba(255,215,0,0.5), 0 8px 24px rgba(0,0,0,0.3); }
+.btn-primary:active { transform: scale(0.98); }
 
-/* ─── Castle silhouette divider ─────────────  */
-.castle-divider {
+/* Ghost CTA */
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: transparent;
+  color: #FFF8E7;
+  font-family: var(--font-nunito);
+  font-weight: 600;
+  border-radius: 9999px;
+  border: 2px solid rgba(255,215,0,0.3);
+  transition: all 0.2s ease;
+  cursor: pointer;
+  text-decoration: none;
+}
+.btn-ghost:hover {
+  border-color: rgba(255,215,0,0.7);
+  background: rgba(255,215,0,0.06);
+  transform: translateY(-1px);
+}
+
+/* Clean card */
+.card {
+  background: rgba(10,31,92,0.55);
+  border: 1px solid rgba(255,215,0,0.1);
+  border-radius: 20px;
+  backdrop-filter: blur(12px);
+  transition: all 0.25s ease;
+}
+.card:hover {
+  border-color: rgba(255,215,0,0.28);
+  background: rgba(18,41,110,0.65);
+  transform: translateY(-3px);
+  box-shadow: 0 16px 48px rgba(0,0,0,0.35), 0 0 24px rgba(255,215,0,0.06);
+}
+
+/* Subtle divider */
+.gold-divider {
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255,215,0,0.4), rgba(255,215,0,0.6), rgba(255,215,0,0.4), transparent);
-  position: relative;
-}
-.castle-divider::after {
-  content: '✦';
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%,-50%);
-  color: rgba(255,215,0,0.8);
-  font-size: 12px;
-  background: var(--disney-night);
-  padding: 0 8px;
+  background: linear-gradient(90deg, transparent, rgba(255,215,0,0.35), transparent);
 }
 
-/* ─── Sparkle dot ───────────────────────────  */
-.sparkle-dot {
-  position: absolute;
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background: #FFD700;
-  animation: sparkle var(--dur, 1.5s) ease-in-out var(--delay, 0s) infinite;
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-12px); }
+}
+@keyframes twinkle {
+  0%, 100% { opacity: 0.15; transform: scale(0.7); }
+  50%       { opacity: 1;    transform: scale(1.3); }
+}
+@keyframes sparkle {
+  0%, 100% { opacity: 0; transform: scale(0); }
+  50%       { opacity: 1; transform: scale(1); }
+}
+@keyframes rise {
+  0%   { opacity: 0; transform: translateY(28px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+@keyframes appear {
+  0%   { opacity: 0; }
+  100% { opacity: 1; }
 }
 
-/* ─── Noise texture overlay ─────────────────  */
-.disney-noise::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
-  pointer-events: none;
-  z-index: 0;
-}
+.anim-rise   { animation: rise   0.75s cubic-bezier(0.16,1,0.3,1) both; }
+.anim-appear { animation: appear 0.6s ease both; }
 
-/* ─── Fireworks burst ───────────────────────  */
-@keyframes burst-ring {
-  0%   { transform: scale(0); opacity: 1; }
-  100% { transform: scale(2.5); opacity: 0; }
-}
-.fireworks-ring {
-  animation: burst-ring 1.2s ease-out forwards;
-}
-
-/* ─── Utility delays ────────────────────────  */
 @layer utilities {
-  .animation-delay-100  { animation-delay: 100ms; }
-  .animation-delay-200  { animation-delay: 200ms; }
-  .animation-delay-300  { animation-delay: 300ms; }
-  .animation-delay-400  { animation-delay: 400ms; }
-  .animation-delay-500  { animation-delay: 500ms; }
-  .animation-delay-600  { animation-delay: 600ms; }
-  .animation-delay-700  { animation-delay: 700ms; }
-  .animation-delay-800  { animation-delay: 800ms; }
-  .animation-delay-1000 { animation-delay: 1000ms; }
-  .animation-delay-1200 { animation-delay: 1200ms; }
-  .animation-fill-both  { animation-fill-mode: both; }
+  .delay-100  { animation-delay:  100ms; }
+  .delay-200  { animation-delay:  200ms; }
+  .delay-300  { animation-delay:  300ms; }
+  .delay-400  { animation-delay:  400ms; }
+  .delay-500  { animation-delay:  500ms; }
+  .delay-700  { animation-delay:  700ms; }
+  .delay-900  { animation-delay:  900ms; }
 }
