@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { MapPin, Menu, X, Sparkles } from "lucide-react";
+import { MapPin, Menu, X, Sparkles, Bookmark } from "lucide-react";
 
 export default function NavBar() {
   const [scrolled, setScrolled] = useState(false);
@@ -92,6 +92,7 @@ export default function NavBar() {
             { label: "Resorts", href: "#resorts" },
             { label: "Features", href: "#features" },
             { label: "How It Works", href: "#how-it-works" },
+            { label: "My Trips", href: "/trips" },
           ].map((item) => (
             <a
               key={item.label}

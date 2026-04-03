@@ -4,6 +4,7 @@ import { MapPin, ArrowLeft, Sparkles, Clock, DollarSign, Calendar, Star, Info } 
 import WaitTimesPanel from "@/components/WaitTimesPanel";
 import WeatherPanel from "@/components/WeatherPanel";
 import ParkHoursPanel from "@/components/ParkHoursPanel";
+import CrowdForecast from "@/components/CrowdForecast";
 
 const RESORTS: Record<string, {
   name: string;
@@ -565,6 +566,9 @@ export default async function ResortPage({ params }: { params: Promise<{ id: str
             {/* Weather */}
             <WeatherPanel resortId={id} />
 
+            {/* Crowd Forecast */}
+            <CrowdForecast resortId={id} />
+
             {/* Park Hours & LL */}
             {/* Rendered client-side via WaitTimesPanel which now includes shows tab */}
 
@@ -610,13 +614,16 @@ export default async function ResortPage({ params }: { params: Promise<{ id: str
               </h3>
               <div className="space-y-3">
                 {resort.hotels.map((hotel) => (
-                  <div
+                  <a
                     key={hotel.name}
-                    className="p-3 rounded-xl border"
+                    href={`https://www.booking.com/search.html?ss=${encodeURIComponent(hotel.name + " " + resort.location)}&aid=304142`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block p-3 rounded-xl border transition-all hover:border-opacity-40 group"
                     style={{ borderColor: "rgba(255,255,255,0.06)", background: "rgba(13,27,42,0.4)" }}
                   >
                     <div className="flex items-start justify-between gap-2 mb-1">
-                      <span className="font-body font-600 text-sm text-park-cream leading-tight">{hotel.name}</span>
+                      <span className="font-body font-600 text-sm text-park-cream leading-tight group-hover:text-park-gold transition-colors">{hotel.name}</span>
                       <span
                         className="text-[10px] px-2 py-0.5 rounded-full font-body flex-shrink-0"
                         style={{
@@ -628,8 +635,11 @@ export default async function ResortPage({ params }: { params: Promise<{ id: str
                       </span>
                     </div>
                     <p className="text-xs text-park-mist font-body mb-1">{hotel.priceRange}</p>
-                    <p className="text-[11px] text-park-mist/70 font-body italic">{hotel.highlight}</p>
-                  </div>
+                    <p className="text-[11px] text-park-mist/70 font-body italic mb-2">{hotel.highlight}</p>
+                    <span className="text-[10px] font-body font-600 text-park-gold opacity-0 group-hover:opacity-100 transition-opacity">
+                      Check availability on Booking.com →
+                    </span>
+                  </a>
                 ))}
               </div>
             </div>
