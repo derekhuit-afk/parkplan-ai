@@ -2,7 +2,8 @@
 import { useState, useRef, useEffect, Suspense, useCallback } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { Send, Sparkles, ArrowLeft, Clock, DollarSign, Hotel, Map, RotateCcw, Bookmark, BookmarkCheck, Trash2, ChevronDown } from "lucide-react";
+import { Send, Sparkles, ArrowLeft, Clock, DollarSign, Hotel, Map, RotateCcw, Bookmark, BookmarkCheck, Trash2, ChevronDown, CalendarDays, Navigation } from "lucide-react";
+import CrowdCalendar from "@/components/CrowdCalendar";
 import { useTripStore, type SavedTrip } from "@/hooks/useTripStore";
 
 const RESORT_NAMES: Record<string, string> = {
@@ -84,12 +85,14 @@ function PlanContent() {
   const [activeTripId, setActiveTripId] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
   const [showTrips, setShowTrips] = useState(false);
+  const [tripMode, setTripMode] = useState<"today" | "future" | null>(null); // null = not chosen yet
+  const [showCalendar, setShowCalendar] = useState(false);
   const endRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const welcome: Message = {
     role: "assistant",
-    content: `🏰 **Welcome to ParkPlan.ai!**${resortName !== "Your Park" ? `\n\nPlanning **${resortName}**? I have live wait times, today\'s weather, and park hours loaded.` : "\n\nI have live wait times, weather, and park hours ready."}\n\nTap a button below to get started, or ask me anything!`,
+    content: `🏰 **Welcome to ParkPlan.ai!**${resortName !== "Your Park" ? ` I\'m your planner for **${resortName}**.` : ""}\n\nAre you visiting **today**, or planning a **future trip**?`,
   };
 
   useEffect(() => {
@@ -151,7 +154,7 @@ function PlanContent() {
     setMessages(trip.messages); setActiveTripId(trip.id); setSaved(true); setShowTrips(false);
   };
 
-  const reset = () => { setMessages([welcome]); setActiveTripId(null); setSaved(false); setInput(""); setShowTrips(false); };
+  const reset = () => { setMessages([welcome]); setActiveTripId(null); setSaved(false); setInput(""); setShowTrips(false); setTripMode(null); setShowCalendar(false); };
 
   const fmt = (text: string) =>
     text.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>").replace(/\n/g, "<br/>");
@@ -282,69 +285,112 @@ function PlanContent() {
         </div>
       </div>
 
-      {/* ── Quick Prompt Buttons ───────────── */}
+      {/* ── Trip Mode Selector + Quick Prompts ── */}
       {messages.length <= 1 && (
-        <div className="flex-shrink-0 px-4 pb-4" onClick={() => setShowTrips(false)}>
-          <p style={{
-            fontFamily: "var(--font-nunito)",
-            fontSize: "0.7rem",
-            fontWeight: 700,
-            letterSpacing: "0.1em",
-            textTransform: "uppercase",
-            color: "rgba(255,215,0,0.6)",
-            textAlign: "center",
-            marginBottom: "10px",
-          }}>
-            Quick Start
-          </p>
-          <div className="max-w-2xl mx-auto flex flex-col gap-3">
-            {QUICK_PROMPTS.map(({ icon: Icon, label, prompt }) => (
-              <button key={label} onClick={() => send(prompt)}
-                className="flex items-center gap-4 w-full text-left transition-all active:scale-[0.98]"
-                style={{
-                  background: "rgba(255,255,255,0.07)",
-                  border: "1px solid rgba(255,215,0,0.22)",
-                  borderRadius: "16px",
-                  padding: "1rem 1.1rem",
-                  color: "#FFFFFF",
-                  fontFamily: "var(--font-nunito)",
-                }}>
-                {/* Icon orb */}
-                <div className="flex items-center justify-center flex-shrink-0"
-                  style={{
-                    width: "44px",
-                    height: "44px",
-                    borderRadius: "12px",
-                    background: "rgba(255,215,0,0.14)",
-                    border: "1px solid rgba(255,215,0,0.25)",
-                  }}>
-                  <Icon size={20} style={{ color: "#FFD700" }} />
-                </div>
-                {/* Label */}
-                <span style={{
-                  fontSize: "0.98rem",
-                  fontWeight: 700,
-                  lineHeight: 1.3,
-                }}>
-                  {label}
-                </span>
-                {/* Arrow */}
-                <span style={{
-                  marginLeft: "auto",
-                  color: "rgba(255,215,0,0.5)",
-                  fontSize: "1.1rem",
-                  flexShrink: 0,
-                }}>
-                  →
-                </span>
-              </button>
-            ))}
-          </div>
+        <div className={`${tripMode === "future" ? "flex-1 overflow-y-auto" : "flex-shrink-0"} px-4 pb-4`} onClick={() => setShowTrips(false)}>
+
+          {/* STEP 1: Today or Future? */}
+          {tripMode === null && (
+            <div className="max-w-2xl mx-auto">
+              <p style={{ fontFamily: "var(--font-nunito)", fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "rgba(255,215,0,0.6)", textAlign: "center", marginBottom: "12px" }}>
+                When are you going?
+              </p>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => { setTripMode("today"); send("I am at the park TODAY. Give me live wait time strategy and an optimized itinerary for right now."); }}
+                  className="flex-1 flex flex-col items-center gap-2.5 py-5 rounded-2xl transition-all active:scale-[0.98]"
+                  style={{ background: "rgba(255,215,0,0.1)", border: "1.5px solid rgba(255,215,0,0.35)" }}>
+                  <div className="w-12 h-12 rounded-xl flex items-center justify-center"
+                    style={{ background: "rgba(255,215,0,0.18)", border: "1px solid rgba(255,215,0,0.35)" }}>
+                    <Navigation size={22} style={{ color: "#FFD700" }} />
+                  </div>
+                  <div className="text-center">
+                    <p style={{ fontFamily: "var(--font-nunito)", fontWeight: 800, fontSize: "1rem", color: "#FFD700" }}>I&apos;m Here Today</p>
+                    <p style={{ fontFamily: "var(--font-nunito)", fontSize: "0.72rem", color: "rgba(220,235,255,0.6)", marginTop: "2px" }}>Live waits &amp; real-time plan</p>
+                  </div>
+                </button>
+
+                <button
+                  onClick={() => { setTripMode("future"); setShowCalendar(true); }}
+                  className="flex-1 flex flex-col items-center gap-2.5 py-5 rounded-2xl transition-all active:scale-[0.98]"
+                  style={{ background: "rgba(200,216,240,0.06)", border: "1.5px solid rgba(200,216,240,0.2)" }}>
+                  <div className="w-12 h-12 rounded-xl flex items-center justify-center"
+                    style={{ background: "rgba(200,216,240,0.1)", border: "1px solid rgba(200,216,240,0.2)" }}>
+                    <CalendarDays size={22} style={{ color: "rgba(220,235,255,0.8)" }} />
+                  </div>
+                  <div className="text-center">
+                    <p style={{ fontFamily: "var(--font-nunito)", fontWeight: 800, fontSize: "1rem", color: "#FFFFFF" }}>Planning Ahead</p>
+                    <p style={{ fontFamily: "var(--font-nunito)", fontSize: "0.72rem", color: "rgba(220,235,255,0.6)", marginTop: "2px" }}>30-day crowd calendar</p>
+                  </div>
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* STEP 2a: TODAY mode — live quick prompts */}
+          {tripMode === "today" && messages.length <= 1 && (
+            <div className="max-w-2xl mx-auto">
+              <div className="flex items-center justify-between mb-3">
+                <p style={{ fontFamily: "var(--font-nunito)", fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "rgba(255,215,0,0.6)" }}>
+                  What do you need right now?
+                </p>
+                <button onClick={() => setTripMode(null)} style={{ fontFamily: "var(--font-nunito)", fontSize: "0.65rem", color: "rgba(220,235,255,0.45)" }}>← back</button>
+              </div>
+              <div className="flex flex-col gap-2.5">
+                {QUICK_PROMPTS.map(({ icon: Icon, label, prompt }) => (
+                  <button key={label} onClick={() => send(prompt)}
+                    className="flex items-center gap-4 w-full text-left transition-all active:scale-[0.98]"
+                    style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,215,0,0.2)", borderRadius: "14px", padding: "0.85rem 1rem" }}>
+                    <div className="flex items-center justify-center flex-shrink-0"
+                      style={{ width: "40px", height: "40px", borderRadius: "10px", background: "rgba(255,215,0,0.12)", border: "1px solid rgba(255,215,0,0.22)" }}>
+                      <Icon size={18} style={{ color: "#FFD700" }} />
+                    </div>
+                    <span style={{ fontFamily: "var(--font-nunito)", fontWeight: 700, fontSize: "0.92rem", color: "#FFFFFF" }}>{label}</span>
+                    <span style={{ marginLeft: "auto", color: "rgba(255,215,0,0.45)", fontSize: "1rem", flexShrink: 0 }}>→</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* STEP 2b: FUTURE mode — crowd calendar + prompts */}
+          {tripMode === "future" && messages.length <= 1 && (
+            <div className="max-w-2xl mx-auto space-y-4">
+              <div className="flex items-center justify-between">
+                <p style={{ fontFamily: "var(--font-nunito)", fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "rgba(255,215,0,0.6)" }}>
+                  Pick your visit date
+                </p>
+                <button onClick={() => setTripMode(null)} style={{ fontFamily: "var(--font-nunito)", fontSize: "0.65rem", color: "rgba(220,235,255,0.45)" }}>← back</button>
+              </div>
+
+              {resortId && <CrowdCalendar resortId={resortId} />}
+
+              <div className="flex flex-col gap-2.5">
+                {[
+                  { icon: CalendarDays, label: "Best days to visit this month", prompt: "What are the least crowded days to visit in the next 30 days and why?" },
+                  { icon: Hotel,        label: "Plan my hotel & budget",         prompt: "Give me hotel recommendations and a full budget breakdown for a future trip." },
+                  { icon: DollarSign,   label: "How much will this trip cost?",  prompt: "Give me a complete cost estimate for my trip — tickets, hotel, food, and extras." },
+                  { icon: Map,          label: "What to plan in advance",        prompt: "What do I need to book or plan ahead for this trip? Dining reservations, Lightning Lane, tickets?" },
+                ].map(({ icon: Icon, label, prompt }) => (
+                  <button key={label} onClick={() => send(prompt)}
+                    className="flex items-center gap-3.5 w-full text-left transition-all active:scale-[0.98]"
+                    style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(200,216,240,0.15)", borderRadius: "14px", padding: "0.85rem 1rem" }}>
+                    <div className="flex items-center justify-center flex-shrink-0"
+                      style={{ width: "38px", height: "38px", borderRadius: "10px", background: "rgba(200,216,240,0.08)", border: "1px solid rgba(200,216,240,0.15)" }}>
+                      <Icon size={17} style={{ color: "rgba(220,235,255,0.7)" }} />
+                    </div>
+                    <span style={{ fontFamily: "var(--font-nunito)", fontWeight: 700, fontSize: "0.88rem", color: "#FFFFFF" }}>{label}</span>
+                    <span style={{ marginLeft: "auto", color: "rgba(220,235,255,0.3)", fontSize: "1rem", flexShrink: 0 }}>→</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       )}
 
       {/* Spacer — pushes input to bottom when in initial state */}
-      {messages.length <= 1 && <div className="flex-1" />}
+      {messages.length <= 1 && tripMode !== "future" && <div className="flex-1" />}
 
       {/* ── Input Bar ─────────────────────── */}
       <div className="flex-shrink-0 px-4 pb-5 pt-3 border-t" style={{ borderColor: "rgba(255,215,0,0.1)" }}

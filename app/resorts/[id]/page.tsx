@@ -4,7 +4,7 @@ import { MapPin, ArrowLeft, Sparkles, Clock, DollarSign, Calendar, Star, Info } 
 import WaitTimesPanel from "@/components/WaitTimesPanel";
 import WeatherPanel from "@/components/WeatherPanel";
 import ParkHoursPanel from "@/components/ParkHoursPanel";
-import CrowdForecast from "@/components/CrowdForecast";
+import CrowdCalendar from "@/components/CrowdCalendar";
 
 const RESORTS: Record<string, {
   name: string;
@@ -567,7 +567,7 @@ export default async function ResortPage({ params }: { params: Promise<{ id: str
             <WeatherPanel resortId={id} />
 
             {/* Crowd Forecast */}
-            <CrowdForecast resortId={id} />
+            <CrowdCalendar resortId={id} />
 
             {/* Park Hours & LL */}
             {/* Rendered client-side via WaitTimesPanel which now includes shows tab */}
