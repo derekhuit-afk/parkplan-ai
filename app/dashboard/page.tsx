@@ -6,6 +6,7 @@ import { MapPin, RefreshCw, Sparkles, ArrowLeft, Clock, CloudRain, Zap, Trending
 import ParkMap from "@/components/ParkMap";
 import AlertsPanel from "@/components/AlertsPanel";
 import ItineraryOptimizer from "@/components/ItineraryOptimizer";
+import WaitTrends from "@/components/WaitTrends";
 import { useAlerts } from "@/hooks/useAlerts";
 import { useWaitHistory } from "@/hooks/useWaitHistory";
 
@@ -51,7 +52,7 @@ function DashboardContent() {
   const [weather, setWeather] = useState<WeatherData | null>(null);
   const [loading, setLoading] = useState(true);
   const [lastUpdate, setLastUpdate] = useState<Date | null>(null);
-  const [activeTab, setActiveTab] = useState<"map"|"optimizer"|"alerts"|"shows">("map");
+  const [activeTab, setActiveTab] = useState<"map"|"optimizer"|"alerts"|"shows"|"trends">("map");
   const [showResortPicker, setShowResortPicker] = useState(false);
   const intervalRef = useRef<ReturnType<typeof setInterval>|null>(null);
 
@@ -213,6 +214,7 @@ function DashboardContent() {
           { key: "optimizer", icon: Sparkles, label: "Optimizer" },
           { key: "alerts", icon: Bell, label: "Alerts" },
           { key: "shows", icon: Clock, label: "Shows" },
+          { key: "trends", icon: TrendingUp, label: "Trends" },
         ] as { key: typeof activeTab; icon: typeof MapPin; label: string }[]).map(({ key, icon: Icon, label }) => (
           <button key={key} onClick={() => setActiveTab(key)}
             className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-body font-500 transition-all"

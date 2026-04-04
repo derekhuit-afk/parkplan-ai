@@ -95,15 +95,15 @@ export default function HeroSection() {
 
         {/* TWO BIG BUTTONS — the whole point of this section */}
         <div className="anim-rise delay-500 flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
-          <Link href="/plan"
+          <Link href="/start"
             className="btn-primary w-full sm:w-auto"
-            style={{ padding: "1.1rem 2.8rem", fontSize: "1.15rem", fontWeight: 800 }}>
-            <Sparkles size={20} />
-            Plan My Trip — Free
+            style={{ padding: "1.2rem 3rem", fontSize: "1.2rem", fontWeight: 800 }}>
+            <Sparkles size={22} />
+            Start Planning — Free
           </Link>
           <Link href="/dashboard"
             className="btn-ghost w-full sm:w-auto"
-            style={{ padding: "1.05rem 2.4rem", fontSize: "1.05rem" }}>
+            style={{ padding: "1.1rem 2.4rem", fontSize: "1.05rem" }}>
             <MapPin size={18} />
             Live Wait Times
           </Link>

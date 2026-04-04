@@ -48,7 +48,7 @@ export default function NavBar() {
 
           {/* Single CTA */}
           <div className="hidden md:block">
-            <Link href="/plan" className="btn-primary px-6 py-2.5 text-sm font-800">
+            <Link href="/start" className="btn-primary px-6 py-2.5 text-sm font-800">
               ✨ Start Planning
             </Link>
           </div>
@@ -73,7 +73,7 @@ export default function NavBar() {
               {label}
             </a>
           ))}
-          <Link href="/plan" onClick={() => setOpen(false)}
+          <Link href="/start" onClick={() => setOpen(false)}
             className="btn-primary py-3.5 text-base font-800 mt-1">
             ✨ Start Planning Free
           </Link>

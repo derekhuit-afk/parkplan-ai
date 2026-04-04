@@ -4,6 +4,7 @@ import { MapPin, ArrowLeft, Sparkles, Clock, DollarSign, Calendar, Star, Info } 
 import WaitTimesPanel from "@/components/WaitTimesPanel";
 import WeatherPanel from "@/components/WeatherPanel";
 import CrowdCalendar from "@/components/CrowdCalendar";
+import AffiliateStrip from "@/components/AffiliateStrip";
 
 const RESORTS: Record<string, {
   name: string; location: string; country: string; emoji: string; tagline: string;
@@ -517,6 +518,9 @@ export default async function ResortPage({ params }: { params: Promise<{ id: str
 
             {/* 30-day crowd calendar */}
             <CrowdCalendar resortId={id} />
+
+            {/* Affiliate links */}
+            <AffiliateStrip resortId={id} />
 
             {/* Plan CTA */}
             <Link href={`/plan?resort=${id}`}

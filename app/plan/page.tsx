@@ -75,6 +75,7 @@ function PlanContent() {
   const searchParams = useSearchParams();
   const resortId = searchParams.get("resort") || "";
   const loadId = searchParams.get("load") || "";
+  const autoStart = searchParams.get("autostart") || "";
   const resortName = RESORT_NAMES[resortId] || "Your Park";
 
   const { trips, ready, saveTrip, updateTrip, deleteTrip } = useTripStore();
@@ -102,6 +103,10 @@ function PlanContent() {
       if (trip) { setMessages(trip.messages); setActiveTripId(trip.id); setSaved(true); return; }
     }
     setMessages([welcome]);
+    // Auto-fire prompt from onboarding
+    if (autoStart) {
+      setTimeout(() => send(decodeURIComponent(autoStart)), 400);
+    }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ready, loadId]);
 
