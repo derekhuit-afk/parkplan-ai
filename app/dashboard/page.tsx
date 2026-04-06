@@ -287,6 +287,14 @@ function DashboardContent() {
               />
             )}
 
+            {/* Trends tab */}
+            {activeTab === "trends" && (
+              <WaitTrends
+                parkId={currentPark?.id || ""}
+                parkName={currentPark?.name || ""}
+              />
+            )}
+
             {/* Shows tab */}
             {activeTab === "shows" && curParkData && (
               <div className="space-y-4">

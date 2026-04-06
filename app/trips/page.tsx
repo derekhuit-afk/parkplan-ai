@@ -1,231 +1,257 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { MapPin, Bookmark, Trash2, ExternalLink, Clock, Users, DollarSign, ArrowLeft, Search, Share2 } from "lucide-react";
-import { useTripStore } from "@/hooks/useTripStore";
-
-const RESORT_EMOJIS: Record<string, string> = {
-  wdw: "🏰", disneyland: "✨", paris: "🗼", tokyo: "🌸",
-  hongkong: "🏮", shanghai: "🐉", "universal-orlando": "🎬",
-};
-
-function ShareButton({ tripId }: { tripId: string }) {
-  const [copied, setCopied] = useState(false);
-  const url = `${typeof window !== "undefined" ? window.location.origin : ""}/trips/${tripId}`;
-  const handleShare = async () => {
-    if (navigator.share) {
-      try { await navigator.share({ title: "My ParkPlan.ai Trip", url }); return; } catch { /* fallback */ }
-    }
-    await navigator.clipboard.writeText(url);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-  return (
-    <button onClick={handleShare}
-      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-body font-500 transition-all"
-      style={{ background: "rgba(78,205,196,0.1)", color: copied ? "#4ECDC4" : "#B8C9D9", border: "1px solid rgba(78,205,196,0.2)" }}>
-      <Share2 size={11} />
-      {copied ? "Copied!" : "Share"}
-    </button>
-  );
-}
+import { ArrowLeft, Search, Trash2, ExternalLink, Sparkles, Download, Upload, Share2, Check } from "lucide-react";
+import { useTripStore, exportTripsToUrl, importTripsFromHash } from "@/hooks/useTripStore";
 
 export default function TripsPage() {
-  const { trips, deleteTrip, clearAll, ready } = useTripStore();
+  const { trips, ready, deleteTrip, clearAll, importTrips } = useTripStore();
   const [search, setSearch] = useState("");
   const [confirmClear, setConfirmClear] = useState(false);
+  const [copiedId, setCopiedId] = useState<string | null>(null);
+  const [importMsg, setImportMsg] = useState<string | null>(null);
+  const [showExportToast, setShowExportToast] = useState(false);
+
+  // Handle import from URL hash on mount
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const hash = window.location.hash;
+    if (hash.includes("data=")) {
+      const imported = importTripsFromHash(hash);
+      if (imported && imported.length > 0) {
+        importTrips(imported);
+        setImportMsg(`✅ ${imported.length} trip${imported.length > 1 ? "s" : ""} imported from link!`);
+        window.history.replaceState({}, "", window.location.pathname);
+        setTimeout(() => setImportMsg(null), 4000);
+      }
+    }
+  }, [importTrips]);
 
   const filtered = trips.filter((t) =>
-    t.title.toLowerCase().includes(search.toLowerCase()) ||
-    t.resortName.toLowerCase().includes(search.toLowerCase())
+    search ? t.title.toLowerCase().includes(search.toLowerCase()) || t.resortName.toLowerCase().includes(search.toLowerCase()) : true
   );
 
+  const handleShare = async (id: string, resortId: string) => {
+    const url = `${window.location.origin}/plan?resort=${resortId}&load=${id}`;
+    try { await navigator.clipboard.writeText(url); }
+    catch { /* fallback */ }
+    setCopiedId(id);
+    setTimeout(() => setCopiedId(null), 2000);
+  };
+
+  const handleExportAll = async () => {
+    const url = exportTripsToUrl(trips);
+    try { await navigator.clipboard.writeText(url); }
+    catch { /* fallback */ }
+    setShowExportToast(true);
+    setTimeout(() => setShowExportToast(false), 3000);
+  };
+
+  const fmtDate = (iso: string) => {
+    try { return new Date(iso).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }); }
+    catch { return iso; }
+  };
+
   if (!ready) return (
-    <div className="min-h-screen bg-park-night flex items-center justify-center">
-      <div className="text-park-gold animate-pulse font-display text-xl">Loading…</div>
+    <div className="min-h-screen flex items-center justify-center" style={{ background: "#00194B" }}>
+      <div className="text-center">
+        <div className="text-4xl mb-3">🏰</div>
+        <p style={{ fontFamily: "var(--font-cinzel)", color: "#FFD700" }}>Loading trips…</p>
+      </div>
     </div>
   );
 
   return (
     <main className="min-h-screen" style={{ background: "#00194B" }}>
       {/* Header */}
-      <header className="border-b px-4 sm:px-6 py-4 sticky top-0 z-10"
-        style={{ borderColor: "rgba(255,215,0,0.12)", background: "rgba(0,25,75,0.97)", backdropFilter: "blur(16px)" }}>
-        <div className="max-w-4xl mx-auto flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2 group">
-            <ArrowLeft size={16} className="text-park-mist group-hover:text-park-gold transition-colors" />
-            <div className="w-7 h-7 rounded-full bg-gold-gradient flex items-center justify-center">
-              <MapPin size={13} className="text-park-night" />
-            </div>
-            <span className="font-display font-700 text-lg text-park-cream hidden sm:block">
-              Park<span className="text-park-gold">Plan</span><span className="text-park-mist text-xs font-body font-normal ml-1">.ai</span>
-            </span>
-          </Link>
-          <Link href="/plan"
-            className="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-body font-600 text-park-night"
-            style={{ background: "linear-gradient(135deg, #FFD700, #FFA500)" }}>
-            + New Plan
+      <header className="sticky top-0 z-30 px-4 py-4 border-b flex items-center gap-3"
+        style={{ background: "rgba(0,25,75,0.97)", borderColor: "rgba(255,215,0,0.1)", backdropFilter: "blur(16px)" }}>
+        <Link href="/" className="p-2 rounded-xl" style={{ color: "rgba(220,235,255,0.6)" }}>
+          <ArrowLeft size={18} />
+        </Link>
+        <span className="text-xl">🏰</span>
+        <span style={{ fontFamily: "var(--font-cinzel)", fontWeight: 700, fontSize: "1rem", color: "#FFD700" }}>
+          My Trips
+        </span>
+        <div className="ml-auto flex items-center gap-2">
+          {trips.length > 0 && (
+            <button onClick={handleExportAll}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs transition-all"
+              style={{ background: "rgba(255,215,0,0.1)", border: "1px solid rgba(255,215,0,0.25)", color: "#FFD700", fontFamily: "var(--font-nunito)", fontWeight: 700 }}>
+              {showExportToast ? <Check size={12} /> : <Download size={12} />}
+              {showExportToast ? "Copied!" : "Export All"}
+            </button>
+          )}
+          <Link href="/start"
+            className="btn-primary flex items-center gap-1.5 px-4 py-2 text-sm">
+            <Sparkles size={13} />
+            New Trip
           </Link>
         </div>
       </header>
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-10">
-        {/* Title */}
-        <div className="mb-8">
-          <div className="flex items-center gap-2 mb-2">
-            <Bookmark size={18} className="text-park-gold" />
-            <h1 className="font-display font-700 text-3xl text-park-cream">My Saved Trips</h1>
-          </div>
-          <p className="font-body text-park-mist text-sm">
-            {trips.length === 0
-              ? "No saved trips yet — start planning and hit save!"
-              : `${trips.length} trip${trips.length !== 1 ? "s" : ""} saved on this device`}
-          </p>
-        </div>
+      <div className="max-w-2xl mx-auto px-4 py-6 space-y-4">
 
-        {/* Search + clear */}
+        {/* Import toast */}
+        {importMsg && (
+          <div className="px-4 py-3 rounded-2xl text-sm font-body text-center"
+            style={{ background: "rgba(127,219,138,0.12)", border: "1px solid rgba(127,219,138,0.3)", color: "#7FDB8A", fontFamily: "var(--font-nunito)" }}>
+            {importMsg}
+          </div>
+        )}
+
+        {/* Export toast */}
+        {showExportToast && (
+          <div className="px-4 py-3 rounded-2xl text-sm font-body text-center"
+            style={{ background: "rgba(255,215,0,0.1)", border: "1px solid rgba(255,215,0,0.25)", color: "#FFD700", fontFamily: "var(--font-nunito)" }}>
+            📋 Link copied — open on any device to import your trips
+          </div>
+        )}
+
+        {/* Cross-device sync info banner */}
         {trips.length > 0 && (
-          <div className="flex gap-3 mb-6">
-            <div className="flex-1 flex items-center gap-2 px-3 py-2.5 rounded-xl border"
-              style={{ background: "rgba(10,31,92,0.5)", borderColor: "rgba(255,255,255,0.1)" }}>
-              <Search size={14} className="text-park-mist flex-shrink-0" />
-              <input
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                placeholder="Search trips…"
-                className="flex-1 bg-transparent text-sm font-body text-park-cream outline-none placeholder-park-mist/50"
-              />
+          <div className="flex items-start gap-3 px-4 py-3.5 rounded-2xl"
+            style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
+            <Share2 size={14} style={{ color: "#FFD700", flexShrink: 0, marginTop: 1 }} />
+            <div>
+              <p style={{ fontFamily: "var(--font-nunito)", fontWeight: 700, fontSize: "0.78rem", color: "#FFFFFF", marginBottom: "2px" }}>
+                Sync to another device
+              </p>
+              <p style={{ fontFamily: "var(--font-nunito)", fontSize: "0.72rem", color: "rgba(220,235,255,0.55)", lineHeight: 1.5 }}>
+                Tap <strong style={{ color: "#FFD700" }}>Export All</strong> to copy a sync link. Open it on your phone or tablet to import all trips instantly — no account needed.
+              </p>
             </div>
-            {confirmClear ? (
-              <div className="flex gap-2">
-                <button onClick={() => setConfirmClear(false)}
-                  className="px-3 py-2 rounded-xl text-xs font-body border text-park-mist"
-                  style={{ borderColor: "rgba(255,255,255,0.1)" }}>Cancel</button>
-                <button onClick={() => { clearAll(); setConfirmClear(false); }}
-                  className="px-3 py-2 rounded-xl text-xs font-body font-600 text-white"
-                  style={{ background: "rgba(255,107,107,0.3)", border: "1px solid rgba(255,107,107,0.4)" }}>
-                  Delete all
-                </button>
-              </div>
-            ) : (
-              <button onClick={() => setConfirmClear(true)}
-                className="px-3 py-2 rounded-xl text-xs font-body text-park-mist border transition-colors hover:text-park-coral"
-                style={{ borderColor: "rgba(255,255,255,0.1)" }}>
-                Clear all
-              </button>
-            )}
+          </div>
+        )}
+
+        {/* Search */}
+        {trips.length > 3 && (
+          <div className="flex items-center gap-3 px-4 py-3 rounded-2xl"
+            style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)" }}>
+            <Search size={15} style={{ color: "rgba(220,235,255,0.4)", flexShrink: 0 }} />
+            <input value={search} onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search trips…" className="flex-1 bg-transparent outline-none text-sm"
+              style={{ color: "#FFFFFF", fontFamily: "var(--font-nunito)" }} />
           </div>
         )}
 
         {/* Empty state */}
         {trips.length === 0 && (
           <div className="text-center py-20">
-            <div className="text-6xl mb-4">🗺️</div>
-            <h2 className="font-display font-700 text-2xl text-park-cream mb-3">No trips saved yet</h2>
-            <p className="font-body text-park-mist mb-8 max-w-sm mx-auto">
-              Start a conversation with the AI planner, then hit the save button to keep your plans here.
+            <div className="text-5xl mb-4">✨</div>
+            <h2 style={{ fontFamily: "var(--font-cinzel)", fontWeight: 700, fontSize: "1.4rem", color: "#FFFFFF", marginBottom: "8px" }}>
+              No saved trips yet
+            </h2>
+            <p style={{ fontFamily: "var(--font-nunito)", fontSize: "0.9rem", color: "rgba(220,235,255,0.55)", marginBottom: "24px" }}>
+              Start planning and save your conversation to see it here.
             </p>
-            <Link href="/plan"
-              className="inline-flex items-center gap-2 px-8 py-3 rounded-full text-sm font-body font-700 text-park-night"
-              style={{ background: "linear-gradient(135deg, #FFD700, #FFA500)" }}>
-              Start Planning
+            <Link href="/start" className="btn-primary px-8 py-3">
+              <Sparkles size={16} />
+              Plan My First Trip
             </Link>
           </div>
         )}
 
-        {/* Trip grid */}
-        {filtered.length > 0 && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {filtered.map((trip) => {
-              const msgCount = trip.messages.filter((m) => m.role === "user").length;
-              const preview = trip.messages.filter((m) => m.role === "assistant").pop()?.content.slice(0, 120) || "";
-              const emoji = RESORT_EMOJIS[trip.resortId] || "🏖";
-              return (
-                <div key={trip.id}
-                  className="group rounded-2xl border overflow-hidden transition-all duration-200 hover:-translate-y-0.5"
-                  style={{ background: "rgba(26,46,69,0.4)", borderColor: "rgba(255,255,255,0.06)" }}>
-                  {/* Card top */}
-                  <div className="p-5">
-                    <div className="flex items-start justify-between gap-3 mb-3">
-                      <div className="flex items-center gap-2">
-                        <span className="text-2xl">{emoji}</span>
-                        <div>
-                          <h3 className="font-display font-700 text-base text-park-cream leading-tight">{trip.title}</h3>
-                          <p className="text-[11px] text-park-mist font-body mt-0.5">{trip.resortName}</p>
-                        </div>
-                      </div>
-                      <button onClick={() => deleteTrip(trip.id)}
-                        className="p-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-all hover:bg-red-500/10 flex-shrink-0">
-                        <Trash2 size={13} className="text-park-mist hover:text-park-coral transition-colors" />
-                      </button>
-                    </div>
+        {/* Trip cards */}
+        <div className="space-y-3">
+          {filtered.map((trip) => {
+            const firstMsg = trip.messages.find((m) => m.role === "user")?.content || "";
+            const preview = firstMsg.length > 80 ? firstMsg.slice(0, 80) + "…" : firstMsg;
+            const msgCount = trip.messages.filter((m) => m.role === "user").length;
 
-                    {/* Meta */}
-                    <div className="flex flex-wrap gap-2 mb-3">
-                      {trip.travelDates && (
-                        <div className="flex items-center gap-1 text-[10px] text-park-mist font-body px-2 py-1 rounded-lg"
-                          style={{ background: "rgba(255,255,255,0.05)" }}>
-                          <Clock size={9} className="text-park-gold" />{trip.travelDates}
-                        </div>
-                      )}
-                      {trip.groupSize && (
-                        <div className="flex items-center gap-1 text-[10px] text-park-mist font-body px-2 py-1 rounded-lg"
-                          style={{ background: "rgba(255,255,255,0.05)" }}>
-                          <Users size={9} className="text-park-gold" />{trip.groupSize}
-                        </div>
-                      )}
-                      {trip.budget && (
-                        <div className="flex items-center gap-1 text-[10px] text-park-mist font-body px-2 py-1 rounded-lg"
-                          style={{ background: "rgba(255,255,255,0.05)" }}>
-                          <DollarSign size={9} className="text-park-gold" />{trip.budget}
-                        </div>
-                      )}
-                      <div className="flex items-center gap-1 text-[10px] text-park-mist/60 font-body px-2 py-1 rounded-lg"
-                        style={{ background: "rgba(255,255,255,0.03)" }}>
-                        {msgCount} message{msgCount !== 1 ? "s" : ""}
+            return (
+              <div key={trip.id} className="rounded-2xl overflow-hidden"
+                style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.09)" }}>
+                {/* Card top */}
+                <div className="px-4 pt-4 pb-3">
+                  <div className="flex items-start justify-between gap-3 mb-2">
+                    <div className="flex-1 min-w-0">
+                      <h3 style={{ fontFamily: "var(--font-cinzel)", fontWeight: 700, fontSize: "0.95rem", color: "#FFFFFF", marginBottom: "3px" }}
+                        className="truncate">
+                        {trip.title}
+                      </h3>
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span style={{ fontFamily: "var(--font-nunito)", fontSize: "0.72rem", color: "#FFD700", fontWeight: 600 }}>
+                          {trip.resortName}
+                        </span>
+                        {trip.travelDates && (
+                          <span style={{ fontFamily: "var(--font-nunito)", fontSize: "0.68rem", color: "rgba(220,235,255,0.5)" }}>
+                            · {trip.travelDates}
+                          </span>
+                        )}
+                        {trip.groupSize && (
+                          <span style={{ fontFamily: "var(--font-nunito)", fontSize: "0.68rem", color: "rgba(220,235,255,0.5)" }}>
+                            · {trip.groupSize}
+                          </span>
+                        )}
                       </div>
                     </div>
-
-                    {/* Preview */}
-                    {preview && (
-                      <p className="text-xs text-park-mist/70 font-body leading-relaxed line-clamp-2">
-                        {preview.replace(/\*\*/g, "").replace(/<[^>]*>/g, "")}…
-                      </p>
-                    )}
+                    <button onClick={() => deleteTrip(trip.id)}
+                      className="p-2 rounded-xl flex-shrink-0 hover:bg-red-500/10 transition-colors">
+                      <Trash2 size={14} style={{ color: "rgba(220,235,255,0.35)" }} />
+                    </button>
                   </div>
 
-                  {/* Card footer */}
-                  <div className="px-5 py-3 border-t flex items-center justify-between"
-                    style={{ borderColor: "rgba(255,255,255,0.05)", background: "rgba(13,27,42,0.4)" }}>
-                    <span className="text-[10px] text-park-mist/50 font-body">
-                      {new Date(trip.updatedAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
+                  {preview && (
+                    <p style={{ fontFamily: "var(--font-nunito)", fontSize: "0.78rem", color: "rgba(220,235,255,0.55)", lineHeight: 1.5 }}>
+                      {preview}
+                    </p>
+                  )}
+
+                  <div className="flex items-center gap-3 mt-3">
+                    <span style={{ fontFamily: "var(--font-nunito)", fontSize: "0.65rem", color: "rgba(220,235,255,0.35)" }}>
+                      {msgCount} message{msgCount !== 1 ? "s" : ""} · Saved {fmtDate(trip.savedAt)}
                     </span>
-                    <div className="flex items-center gap-2">
-                      <ShareButton tripId={trip.id} />
-                      <Link href={`/plan?resort=${trip.resortId}&load=${trip.id}`}
-                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-body font-600 transition-all"
-                        style={{ background: "rgba(255,215,0,0.12)", color: "#FFD700", border: "1px solid rgba(245,200,66,0.25)" }}>
-                        <ExternalLink size={11} />Open
-                      </Link>
-                    </div>
                   </div>
                 </div>
-              );
-            })}
-          </div>
-        )}
 
-        {search && filtered.length === 0 && trips.length > 0 && (
-          <div className="text-center py-12">
-            <p className="text-park-mist font-body">No trips match &ldquo;{search}&rdquo;</p>
-          </div>
-        )}
+                {/* Card actions */}
+                <div className="flex border-t" style={{ borderColor: "rgba(255,255,255,0.06)" }}>
+                  <button
+                    onClick={() => handleShare(trip.id, trip.resortId)}
+                    className="flex-1 flex items-center justify-center gap-1.5 py-3 text-xs transition-all"
+                    style={{ fontFamily: "var(--font-nunito)", fontWeight: 600, color: copiedId === trip.id ? "#7FDB8A" : "rgba(220,235,255,0.5)" }}>
+                    {copiedId === trip.id ? <Check size={12} /> : <Share2 size={12} />}
+                    {copiedId === trip.id ? "Copied!" : "Share"}
+                  </button>
 
-        {/* Storage notice */}
+                  <div style={{ width: "1px", background: "rgba(255,255,255,0.06)" }} />
+
+                  <Link
+                    href={`/plan?resort=${trip.resortId}&load=${trip.id}`}
+                    className="flex-1 flex items-center justify-center gap-1.5 py-3 text-xs font-bold transition-all"
+                    style={{ fontFamily: "var(--font-nunito)", fontWeight: 700, color: "#FFD700" }}>
+                    <ExternalLink size={12} />
+                    Continue
+                  </Link>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Clear all */}
         {trips.length > 0 && (
-          <p className="text-[10px] text-park-mist/30 text-center font-body mt-10">
-            Trips are saved locally on this device. Clearing browser data will remove them.
-          </p>
+          <div className="pt-4 text-center">
+            {confirmClear ? (
+              <div className="flex items-center justify-center gap-3">
+                <button onClick={() => { clearAll(); setConfirmClear(false); }}
+                  className="px-4 py-2 rounded-xl text-sm"
+                  style={{ background: "rgba(255,100,100,0.15)", border: "1px solid rgba(255,100,100,0.3)", color: "#FF6B6B", fontFamily: "var(--font-nunito)", fontWeight: 700 }}>
+                  Yes, delete all
+                </button>
+                <button onClick={() => setConfirmClear(false)}
+                  style={{ fontFamily: "var(--font-nunito)", fontSize: "0.8rem", color: "rgba(220,235,255,0.4)" }}>
+                  Cancel
+                </button>
+              </div>
+            ) : (
+              <button onClick={() => setConfirmClear(true)}
+                style={{ fontFamily: "var(--font-nunito)", fontSize: "0.75rem", color: "rgba(220,235,255,0.3)" }}>
+                Clear all trips
+              </button>
+            )}
+          </div>
         )}
       </div>
     </main>

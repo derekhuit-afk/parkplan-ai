@@ -172,13 +172,17 @@ export default function StartPage() {
       </div>
 
       {/* Bottom CTA — shows on step 3 */}
-      {step === 3 && groupType && (
-        <div className="flex-shrink-0 px-5 pb-8 pt-4">
-          <button onClick={handleLaunch}
-            className="btn-primary w-full"
+      {step === 3 && (
+        <div className="flex-shrink-0 px-5 pb-8 pt-4 space-y-3">
+          <button onClick={handleLaunch} disabled={!groupType}
+            className="btn-primary w-full transition-all disabled:opacity-40"
             style={{ padding: "1.1rem", fontSize: "1.05rem", fontWeight: 800 }}>
             <Sparkles size={20} />
             Build My Plan
+          </button>
+          <button onClick={() => { if (!groupType) setGroupType("family"); handleLaunch(); }}
+            style={{ fontFamily: "var(--font-nunito)", fontSize: "0.75rem", color: "rgba(220,235,255,0.4)", display: "block", width: "100%", textAlign: "center" }}>
+            Skip and just start chatting →
           </button>
         </div>
       )}

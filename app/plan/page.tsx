@@ -103,9 +103,10 @@ function PlanContent() {
       if (trip) { setMessages(trip.messages); setActiveTripId(trip.id); setSaved(true); return; }
     }
     setMessages([welcome]);
-    // Auto-fire prompt from onboarding
+    // Auto-fire prompt from onboarding — set today mode so UI is correct
     if (autoStart) {
-      setTimeout(() => send(decodeURIComponent(autoStart)), 400);
+      setTripMode("today");
+      setTimeout(() => send(decodeURIComponent(autoStart)), 500);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ready, loadId]);
